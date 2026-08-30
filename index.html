@@ -36,7 +36,6 @@ button,input,select,textarea{font:inherit}
 #districtPrimaryTabs,#districtRemainingTabs{display:none}
 body.district-mode #normalTabs{display:none}
 body.district-mode #districtPrimaryTabs,body.district-mode #districtRemainingTabs{display:block}
-body.distributor-mode .tabs .tab:not([data-tab-id="dashboard"]):not([data-tab-id="distribution"]):not([data-tab-id="settings"]),body.distributor-mode .tabs .session-card,body.distributor-mode .tabs .help-card{display:none}
 body.payment-only-mode .tabs .tab:not([data-tab-id="receipts"]):not([data-tab-id="settings"]),body.payment-only-mode .tabs .session-card,body.payment-only-mode .tabs .help-card{display:none!important}
 body:not(.final-mode) #dangerZone{display:none!important}
 .section{padding:18px;margin-bottom:16px}
@@ -49,7 +48,7 @@ label{font-size:13px;font-weight:700;display:block;margin:11px 0 5px}.hidden{dis
 .kpi.blue{background:#f5f9ff;border-color:#cfe0ff}.kpi.green{background:#f2fbf5;border-color:#cdeed7}.kpi.orange{background:#fffaf1;border-color:#f7dfb0}.kpi.purple{background:#faf7ff;border-color:#e5d9ff}.kpi.teal{background:#f1fbfc;border-color:#cdeff2}.kpi.red{background:#fef2f2;border-color:#fca5a5}
 .kpi .icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:24px;background:#e9f1ff}.kpi.green .icon{background:#dff5e6}.kpi.orange .icon{background:#fff0d1}.kpi.purple .icon{background:#efe5ff}.kpi.teal .icon{background:#def5f7}.kpi.red .icon{background:#fee2e2}
 .kpi .value{font-size:32px;font-weight:850;margin:9px 0 2px}.kpi .label{font-size:14px;font-weight:600;color:#334155;line-height:1.35}.kpi .sub{font-size:12px;color:#64748b;margin-top:4px}
-.dashboard-grid{display:grid;grid-template-columns:1.1fr 1fr .9fr;gap:16px}
+.dashboard-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px}
 .dash-card{padding:18px;min-height:330px}.dash-title{font-weight:800;font-size:16px;margin:0}.dash-sub{font-size:13px;color:#64748b;margin:4px 0 16px}
 .donut-wrap{display:flex;align-items:center;gap:18px}.donut{width:190px;height:190px;border-radius:50%;display:grid;place-items:center;flex:none}.donut::after{content:"";width:120px;height:120px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #eef2f7}.donut-center{position:absolute;text-align:center;z-index:2}.donut-box{position:relative;display:grid;place-items:center}.donut-center b{display:block;font-size:24px;color:#15803d}.donut-center span{font-size:12px;color:#475569}
 .status-legend{flex:1}.legend-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #edf1f6;font-size:13.5px}.legend-left{display:flex;align-items:center;gap:8px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.green-dot{background:#22c55e}.orange-dot{background:#f59e0b}
@@ -57,7 +56,6 @@ label{font-size:13px;font-weight:700;display:block;margin:11px 0 5px}.hidden{dis
 .quick{display:flex;flex-direction:column;gap:8px}.quick .btn{width:100%;text-align:left;background:#fff;border:1px solid #cfe0ff;color:#1d4ed8}.quick .btn.green-action{border-color:#bfe8ca;color:#15803d;background:#f5fff7}.quick .btn.purple-action{border-color:#ddd0ff;color:#6d28d9;background:#fbf8ff}.quick .btn.orange-action{border-color:#f5dca7;color:#b45309;background:#fffaf0}
 .notice-list{margin-top:16px;border-top:1px solid #edf1f6;padding-top:12px}.notice{display:flex;gap:9px;padding:8px 0;font-size:12px}.notice .ni{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#fff0d1;color:#b45309;flex:none}.notice.info .ni{background:#e6f1ff;color:#2563eb}.notice.ok .ni{background:#e7f8ed;color:#16a34a}
 .session-card{margin-top:16px;background:#f8fbff;border-color:#d9e6ff;padding:15px}.session-card h4{margin:0 0 10px;color:#2563eb;font-size:13px}.session-row{display:grid;grid-template-columns:70px 1fr;gap:6px;font-size:12px;margin:6px 0}.session-row span{color:#64748b}.help-card{margin-top:12px;background:#f1fff6;border-color:#ccefd8;padding:15px;font-size:12px}.help-card b{color:#166534}
-body.distributor-mode .dashboard-grid .dash-card:last-child{display:none}
 .dashboard-footer{margin-top:2px;padding:12px;text-align:center;color:#64748b;font-size:11px}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f8fafc;color:#334155;position:sticky;top:0;z-index:1}
 .badge{padding:4px 8px;border-radius:99px;font-size:10px;font-weight:800}.done{background:#dcfce7;color:#166534}.pending{background:#fff7ed;color:#9a3412}
@@ -71,10 +69,8 @@ body:not(.logged-in) .app>.main{display:none!important}
 body:not(.logged-in) .app>.login{display:block!important;width:min(480px,100%);position:static!important;padding:28px;border-radius:20px;box-shadow:0 12px 40px rgba(20,36,82,.12)}
 .login .brand-mini{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:15px;border-bottom:1px solid var(--line)}
 .login .brand-mini .mini-logo{width:58px;height:58px;object-fit:contain}.login .login-title{font-size:13px;color:#64748b;margin-top:3px}
-.distributor-check{display:none;margin-top:12px;padding:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px}.distributor-check label{display:flex;align-items:center;gap:9px;margin:0;font-size:13px;cursor:pointer}.distributor-check input{width:18px;height:18px;margin:0;accent-color:#16a34a}.distributor-note{display:none;margin-top:8px;font-size:11px;color:#166534;line-height:1.45}
-.distributor-status{margin-top:12px;padding:12px;border-radius:10px;border:1px solid #bfdbfe;background:#eff6ff}
-@media(max-width:1200px){.kpis{grid-template-columns:repeat(3,1fr)}.dashboard-grid{grid-template-columns:1fr 1fr}.dashboard-grid .dash-card:last-child{grid-column:1/-1}}
-@media(max-width:900px){.main{grid-template-columns:1fr}.tabs{position:static;grid-column:1;grid-row:auto;flex-direction:row;overflow:auto}.tab{min-width:125px;justify-content:center}.panel{grid-column:1;grid-row:auto}.header-tagline{display:none}.dashboard-grid{grid-template-columns:1fr}.dashboard-grid .dash-card:last-child{grid-column:auto}}
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(3,1fr)}.dashboard-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.main{grid-template-columns:1fr}.tabs{position:static;grid-column:1;grid-row:auto;flex-direction:row;overflow:auto}.tab{min-width:125px;justify-content:center}.panel{grid-column:1;grid-row:auto}.header-tagline{display:none}.dashboard-grid{grid-template-columns:1fr}}
 @media(max-width:650px){
  .header{height:76px;padding:0 10px}.logo{width:60px;height:58px}.title h1{font-size:19px}.title h2{font-size:10px}.header-user .user-meta{display:none}.header-logout{padding:7px 9px;font-size:11px}
  .app{padding:9px}.kpis{grid-template-columns:1fr 1fr}.kpi{min-height:120px;padding:12px}.kpi .value{font-size:22px}.kpi .icon{width:38px;height:38px;font-size:19px}.section{padding:13px}
@@ -84,14 +80,12 @@ body:not(.logged-in) .app>.login{display:block!important;width:min(480px,100%);p
 @media print{
  body{background:#fff!important}.header{position:static}.app{display:block!important;padding:0!important}.login,.tabs,.toolbar,.btn,.info,.quote,.footer,.header-user{display:none!important}.panel{display:none!important}.panel.print-active{display:block!important}.card{box-shadow:none!important;border:1px solid #bbb!important;margin-bottom:8px}.section{padding:10px!important}.head{margin-bottom:8px}th{position:static!important}
 }
-body.distributor-mode #addCentreBtn,
-body.distributor-mode #addRequirementBtn {
-  display: none !important;
-}
 #districtSummaryTop { display: none !important; }
 #districtSummaryBottom { display: block; }
 body.district-mode #districtSummaryTop { display: block !important; }
 body.district-mode #districtSummaryBottom { display: none !important; }
+body.distributor-mode .tabs .tab:not([data-tab-id="dashboard"]):not([data-tab-id="distribution"]):not([data-tab-id="settings"]),body.distributor-mode .tabs .session-card,body.distributor-mode .tabs .help-card{display:none}
+body.distributor-mode #addCentreBtn, body.distributor-mode #addRequirementBtn, body.distributor-mode #addCentreQuickBtn, body.distributor-mode #addRequirementQuickBtn { display: none !important; }
 </style>
 </head>
 <body>
@@ -135,13 +129,13 @@ body.district-mode #districtSummaryBottom { display: none !important; }
 
 <nav class="tabs">
   <div id="districtPrimaryTabs">
-    <button class="tab active" data-tab-id="distribution" onclick="showTab('distribution',this)">▣ <span>Distribution</span></button>
+    <button class="tab active" data-tab-id="distribution" onclick="showTab('distribution',this)">▣ <span>Reception Centres</span></button>
     <button class="tab" data-tab-id="receipts" onclick="showTab('receipts',this)">✉ <span>Receipts &amp; Payments</span></button>
   </div>
 
   <div id="normalTabs">
     <button class="tab" data-tab-id="dashboard" onclick="showTab('dashboard',this)">⌂ <span>Dashboard</span></button>
-    <button class="tab" data-tab-id="distribution" onclick="showTab('distribution',this)">▣ <span>Distribution</span></button>
+    <button class="tab" data-tab-id="distribution" onclick="showTab('distribution',this)">▣ <span>Reception Centres</span></button>
     <button class="tab" data-tab-id="receipts" onclick="showTab('receipts',this)">✉ <span>Receipts &amp; Payments</span></button>
     <button class="tab" data-tab-id="reports" onclick="showTab('reports',this)">▤ <span>Reports</span></button>
     <button class="tab" data-tab-id="admins" onclick="showTab('admins',this)">♙ <span>Masters / Admins</span></button>
@@ -171,22 +165,6 @@ body.district-mode #districtSummaryBottom { display: none !important; }
 
 
 <section id="dashboard" class="panel active">
-  <div id="distributorConfirmCard" class="card section hidden" style="background:#f0fdf4;border-color:#b7ebc6;margin-bottom:16px">
-    <div class="head" style="margin-bottom:8px">
-      <div>
-        <h2 style="font-size:20px">📦 Book Dispatch Confirmation</h2>
-        <div class="small" style="margin-top:4px">Please confirm whether the books have been sent to the assigned reception centre.</div>
-      </div>
-    </div>
-    <label style="display:flex;align-items:center;gap:10px;margin:10px 0 4px;cursor:pointer;font-size:14px">
-      <input id="postLoginBooksSent" type="checkbox" style="width:20px;height:20px;accent-color:#16a34a">
-      <span><b>Books sent to the assigned reception centre</b></span>
-    </label>
-    <div id="postLoginBooksNote" class="small" style="color:#166534;margin:5px 0 0 30px">
-      Tick this only after the books have actually been sent.
-    </div>
-    <div id="postLoginBooksStatus" style="margin-top:12px;font-size:12px;font-weight:800"></div>
-  </div>
   <div class="head" style="margin:0 0 15px">
     <div>
       <h2 style="font-size:28px">Dashboard</h2>
@@ -196,38 +174,23 @@ body.district-mode #districtSummaryBottom { display: none !important; }
   </div>
 
   <!-- Top summary for district mode -->
+  <div id="distributorConfirmCard" class="card section hidden" style="background:#fff;border-color:var(--line);margin-bottom:16px"></div>
   <div id="districtSummaryTop" class="card section" style="margin-top:16px">
-    <div class="head"><h2>🏫 District Wise Summary</h2></div>
+    <div class="head">
+      <h2>🏫 District Wise Summary</h2>
+      <button class="btn printbtn" onclick="printDistrictAccounts()">🖨 Print Summary</button>
+    </div>
     <div class="toolbar"><input id="summarySearchTop" placeholder="Search district..." oninput="renderSummary()"></div>
     <div id="summaryTop"></div>
   </div>
 
   <div class="kpis">
     <div class="kpi blue"><div class="icon">📖</div><div class="value" id="books">0</div><div class="label">Total Books Indented</div><div class="sub">Across visible distribution records</div></div>
-    <div class="kpi green"><div class="icon">✓</div><div class="value" id="sentSchools">0</div><div class="label">Schools / Centres Sent Books</div><div class="sub" id="sentPercent">0% Completed</div></div>
-    <div class="kpi orange"><div class="icon">⌛</div><div class="value" id="pendingSchools">0</div><div class="label">Pending Schools / Centres</div><div class="sub" id="pendingPercent">0% Remaining</div></div>
-    <div class="kpi purple"><div class="icon">▣</div><div class="value" id="distributed">0</div><div class="label">Total Books Distributed</div><div class="sub">Marked as completed</div></div>
-    <div class="kpi teal"><div class="icon">🚚</div><div class="value" id="activeDistributors">0</div><div class="label">Distributors Active</div><div class="sub">Based on dispatch activity</div></div>
     <div class="kpi green"><div class="icon">₹</div><div class="value" id="paidAmountKpi">₹0</div><div class="label">Paid Amount</div><div class="sub">Total payments received</div></div>
     <div class="kpi red"><div class="icon">₹</div><div class="value" id="balanceAmountKpi">₹0</div><div class="label">Balance Amount</div><div class="sub">Total outstanding balance</div></div>
   </div>
 
   <div class="dashboard-grid" style="margin-top:16px">
-    <div class="card dash-card">
-      <div class="dash-title">⌁ Distribution Status</div>
-      <div class="dash-sub">Overview of books distribution in the visible scope</div>
-      <div class="donut-wrap">
-        <div class="donut-box">
-          <div class="donut" id="distributionDonut" style="background:conic-gradient(#22c55e 0deg,#f59e0b 0deg)"></div>
-          <div class="donut-center"><b id="donutPercent">0%</b><span>Completed</span></div>
-        </div>
-        <div class="status-legend">
-          <div class="legend-row"><div class="legend-left"><span class="dot green-dot"></span>Books Sent</div><b id="legendSent">0</b></div>
-          <div class="legend-row"><div class="legend-left"><span class="dot orange-dot"></span>Pending</div><b id="legendPending">0</b></div>
-          <div class="legend-row"><div>Total Units</div><b id="legendTotal">0</b></div>
-        </div>
-      </div>
-    </div>
 
     <div class="card dash-card">
       <div style="display:flex;justify-content:space-between;align-items:center">
@@ -241,10 +204,12 @@ body.district-mode #districtSummaryBottom { display: none !important; }
     <div class="card dash-card">
       <div class="dash-title">ϟ Quick Actions</div>
       <div class="dash-sub">Frequently used operations</div>
-      <div class="quick">
-        <button class="btn" onclick="newReceptionCentre()">＋ Add New School / Centre</button>
-        <button class="btn purple-action" onclick="showTab('reports',document.querySelectorAll('.tab')[2])">▣ View Distribution Report</button>
-        <button class="btn orange-action" onclick="exportCSV()">⇩ Download School List</button>
+      <div style="display:flex; flex-direction:row; flex-wrap:wrap; gap:8px; margin-top:10px;">
+        <button id="addCentreQuickBtn" class="btn" onclick="newReceptionCentre()" style="padding:6px 10px; font-size:12px; font-weight:750; border: 1px solid #bfe8ca; color: #15803d; background: #f5fff7; width:auto; text-align:center;">＋ Add Reception Centres</button>
+        <button id="addRequirementQuickBtn" class="btn" onclick="newBookRequirement()" style="padding:6px 10px; font-size:12px; font-weight:750; border: 1px solid #bfe8ca; color: #15803d; background: #f5fff7; width:auto; text-align:center;">＋ Add Books Requirement</button>
+        <button class="btn printbtn" onclick="printForm1ReceptionCentres()" style="padding:6px 10px; font-size:12px; font-weight:750; width:auto; text-align:center;">🖨 Print Reception Centres</button>
+        <button class="btn printbtn" onclick="printForm2BookRequirements()" style="padding:6px 10px; font-size:12px; font-weight:750; width:auto; text-align:center;">🖨 Print Books Requirement</button>
+        <button class="btn printbtn" onclick="printReceiptUploads()" style="padding:6px 10px; font-size:12px; font-weight:750; background:#7c3aed; color:#fff; width:auto; text-align:center;">🖨 Print Receipt Uploads & Audit</button>
       </div>
       <div class="notice-list">
         <div class="dash-title" style="font-size:14px">♧ Notifications</div>
@@ -254,32 +219,24 @@ body.district-mode #districtSummaryBottom { display: none !important; }
   </div>
   <!-- Bottom summary for other modes -->
   <div id="districtSummaryBottom" class="card section" style="margin-top:16px">
-    <div class="head"><h2>🏫 District Wise Summary</h2></div>
+    <div class="head">
+      <h2>🏫 District Wise Summary</h2>
+      <button class="btn printbtn" onclick="printDistrictAccounts()">🖨 Print Summary</button>
+    </div>
     <div class="toolbar"><input id="summarySearchBottom" placeholder="Search district..." oninput="renderSummary()"></div>
     <div id="summaryBottom"></div>
   </div>
 </section>
 
 <section id="distribution" class="panel">
-<div class="card section" id="distributionEntriesCard">
-<div class="head">
-  <h2>📦 Books Distribution</h2>
-  <div class="actions">
-    <button class="btn primary" onclick="newEntry()">＋ Add Entry</button>
-  </div>
-</div>
-<p class="small">Track the books distribution status for each reception point.</p>
-<div class="toolbar">
-  <select id="filterDistrict" onchange="renderEntries()"></select>
-  <input id="entrySearch" placeholder="Search reception point / in-charge..." oninput="renderEntries()">
-</div>
-<div id="entries"></div>
-</div>
 
 <div class="card section" style="background:#f8fbff;border-color:#bfdbfe">
 <div class="head">
   <h3 style="margin:0">🏫 Form 1 — Reception Centres</h3>
-  <button id="addCentreBtn" class="btn secondary" onclick="newReceptionCentre()">＋ Add Reception Centre</button>
+  <div class="actions">
+    <button class="btn printbtn" onclick="printForm1ReceptionCentres()">🖨 Print</button>
+    <button id="addCentreBtn" class="btn secondary" onclick="newReceptionCentre()">＋ Add Reception Centre</button>
+  </div>
 </div>
 <p class="small">Enter the centres / addresses where Ganitha Deepthi books will be received in the district.</p>
 <div class="toolbar">
@@ -301,12 +258,15 @@ body.district-mode #districtSummaryBottom { display: none !important; }
 <div class="card section" style="background:#fcfaff;border-color:#ddd6fe">
 <div class="head">
   <h3 style="margin:0">📚 Form 2 — Books Requirement</h3>
-  <button id="addRequirementBtn" class="btn secondary" onclick="newBookRequirement()">＋ Add Books Requirement</button>
+  <div class="actions">
+    <button class="btn printbtn" onclick="printForm2BookRequirements()">🖨 Print</button>
+    <button id="addRequirementBtn" class="btn secondary" onclick="newBookRequirement()">＋ Add Books Requirement</button>
+  </div>
 </div>
 <p class="small">Enter the number of books required by each reception centre, separately for English Medium and Telugu Medium.</p>
 <div class="toolbar">
   <select id="requirementFilterDistrict" onchange="renderBookRequirements()"></select>
-  <input id="requirementSearch" placeholder="Search centre / class / in-charge..." oninput="renderBookRequirements()">
+  <input id="requirementSearch" placeholder="Search centre / in-charge..." oninput="renderBookRequirements()">
 </div>
 <div id="bookRequirements"></div>
 </div>
@@ -409,6 +369,7 @@ body.district-mode #districtSummaryBottom { display: none !important; }
   <div class="head">
     <h2>🧾 Receipt Uploads &amp; Audit</h2>
     <div class="actions">
+      <button class="btn printbtn" onclick="printReceiptUploads()">🖨 Print</button>
       <button class="btn secondary" onclick="newReceipt()">＋ Upload Receipt</button>
     </div>
   </div>
@@ -469,10 +430,12 @@ body.district-mode #districtSummaryBottom { display: none !important; }
       <div id="specialCredentialTable"></div>
     </div>
 
-    <div class="card" style="padding:15px" id="distributorAccountsCard">
-      <div style="font-weight:800;margin-bottom:8px">🚚 Distributor Accounts</div>
+    <div class="card" style="padding:15px;margin-bottom:14px" id="distributorAccountsCard">
+      <div style="font-weight:800;margin-bottom:8px">📦 Distributor Accounts</div>
       <div id="distributorCredentialTable"></div>
     </div>
+
+
   </div>
 </section>
 
@@ -510,7 +473,73 @@ body.district-mode #districtSummaryBottom { display: none !important; }
   </div>
 </section>
 
+<section id="printDistrictAccounts" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>🏫 APMF District Accounts Summary</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('dashboard')">← Back to Dashboard</button>
+      </div>
+    </div>
+    <div id="printDistrictAccountsContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
+<section id="printForm1ReceptionCentres" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>🏫 Reception Centres Details</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('distribution')">← Back</button>
+      </div>
+    </div>
+    <div id="printForm1ReceptionCentresContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
+<section id="printForm2BookRequirements" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>📚 Books Requirements Details</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('distribution')">← Back</button>
+      </div>
+    </div>
+    <div id="printForm2BookRequirementsContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
+<section id="printReceiptUploads" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>🧾 Receipt Uploads &amp; Audit Details</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('receipts')">← Back</button>
+      </div>
+    </div>
+    <div id="printReceiptUploadsContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
+<section id="printPayments" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>💰 Payments Received Details</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('receipts')">← Back</button>
+      </div>
+    </div>
+    <div id="printPaymentsContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
 <section id="settings" class="panel">
+
   <div style="display:flex; flex-direction:column; gap:20px; align-items:flex-start; width:100%;">
     <!-- System Info Card -->
     <div class="card section" style="width:100%; max-width:600px; box-sizing:border-box; margin:0;">
@@ -554,19 +583,7 @@ body.district-mode #districtSummaryBottom { display: none !important; }
       </div>
     </div>
 
-    <!-- Sync to Cloud Card (Final Admin only) -->
-    <div id="syncCloudCard" class="card section" style="width:100%; max-width:600px; box-sizing:border-box; margin:0; border-color:#bfdbfe; background:#eff6ff;">
-      <div class="head"><h2 style="color:#1d4ed8;">☁️ Sync All Data to Cloud</h2></div>
-      <p style="font-size:13.5px; color:#1e3a5f; margin-bottom:8px;">Push all data currently stored on this device (localStorage) to the cloud DynamoDB database. Run this once from the device where all data was originally entered.</p>
-      <p style="font-size:12px; color:#475569; margin-bottom:14px;">⚠️ This will overwrite any existing cloud records with the same ID. Safe to run multiple times.</p>
-      <div id="syncProgressWrap" style="display:none; margin-bottom:12px;">
-        <div style="font-size:13px; color:#1d4ed8; font-weight:600; margin-bottom:6px;" id="syncProgressLabel">Syncing…</div>
-        <div style="background:#dbeafe; border-radius:8px; height:10px; overflow:hidden;">
-          <div id="syncProgressBar" style="height:10px; background:#2563eb; border-radius:8px; width:0%; transition:width 0.3s;"></div>
-        </div>
-      </div>
-      <button class="btn primary" id="syncCloudBtn" onclick="syncAllToCloud()" style="background:#1d4ed8;">☁️ Sync All to Cloud Now</button>
-    </div>
+
 
     <!-- Danger Zone Card -->
     <div id="dangerZone" class="card section" style="width:100%; max-width:600px; box-sizing:border-box; margin:0; border-color:#fee2e2; background:#fef2f2;">
@@ -599,15 +616,20 @@ const districts=["Alluri Sitharama Raju", "Anakapalli", "Ananthapuramu", "Annama
 const defaultDistributorCredentials=[{"username":"apmf_distributor","password":"APMF@DIST2026"}];
 const defaultCredentials=[{"district": "Alluri Sitharama Raju", "username": "apmf_asr", "password": "APMF@ASR2026"}, {"district": "Anakapalli", "username": "apmf_aka", "password": "APMF@AKA2026"}, {"district": "Ananthapuramu", "username": "apmf_atp", "password": "APMF@ATP2026"}, {"district": "Annamayya", "username": "apmf_ann", "password": "APMF@ANN2026"}, {"district": "Bapatla", "username": "apmf_bap", "password": "APMF@BAP2026"}, {"district": "Chittoor", "username": "apmf_chi", "password": "APMF@CHI2026"}, {"district": "Dr. B. R. Ambedkar Konaseema", "username": "apmf_kon", "password": "APMF@KON2026"}, {"district": "East Godavari", "username": "apmf_egd", "password": "APMF@EGD2026"}, {"district": "Eluru", "username": "apmf_elu", "password": "APMF@ELU2026"}, {"district": "Guntur", "username": "apmf_gnt", "password": "APMF@GNT2026"}, {"district": "Kakinada", "username": "apmf_kak", "password": "APMF@KAK2026"}, {"district": "Krishna", "username": "apmf_kri", "password": "APMF@KRI2026"}, {"district": "Kurnool", "username": "apmf_kur", "password": "APMF@KUR2026"}, {"district": "Markapuram", "username": "apmf_mar", "password": "APMF@MAR2026"}, {"district": "Nandyal", "username": "apmf_nan", "password": "APMF@NAN2026"}, {"district": "NTR", "username": "apmf_ntr", "password": "APMF@NTR2026"}, {"district": "Palnadu", "username": "apmf_pal", "password": "APMF@PAL2026"}, {"district": "Parvathipuram Manyam", "username": "apmf_pmn", "password": "APMF@PMN2026"}, {"district": "Polavaram", "username": "apmf_pol", "password": "APMF@POL2026"}, {"district": "Prakasam", "username": "apmf_pra", "password": "APMF@PRA2026"}, {"district": "Sri Potti Sriramulu Nellore", "username": "apmf_nel", "password": "APMF@NEL2026"}, {"district": "Srikakulam", "username": "apmf_skm", "password": "APMF@SKM2026"}, {"district": "Sri Sathya Sai", "username": "apmf_sss", "password": "APMF@SSS2026"}, {"district": "Tirupati", "username": "apmf_tpt", "password": "APMF@TPT2026"}, {"district": "Visakhapatnam", "username": "apmf_vsp", "password": "APMF@VSP2026"}, {"district": "Vizianagaram", "username": "apmf_vzm", "password": "APMF@VZM2026"}, {"district": "West Godavari", "username": "apmf_wgd", "password": "APMF@WGD2026"}, {"district": "YSR Kadapa", "username": "apmf_kdp", "password": "APMF@KDP2026"}, {"district": "VGS books", "username": "vgs_books", "password": "VGS@BOOKS2026"}, {"district": "APMF amount", "username": "apmf_amount", "password": "APMF@AMT2026"}];
 const DB_KEY="ganitha_deepthi_2026_27_v5";
-const AWS_API_URL = "https://siphly4n5j.execute-api.us-east-1.amazonaws.com"; // AWS API Gateway Invoke URL (N. Virginia)
+const AWS_API_URL = "https://avw9jsx7eh.execute-api.ap-south-2.amazonaws.com"; // AWS API Gateway Invoke URL (Hyderabad)
 
 let db=JSON.parse(localStorage.getItem(DB_KEY)||"null")||{entries:[],payments:[],receipts:[],receptionCentres:[],bookRequirements:[],audit:[],distributorStatus:[]};
 db.customPasswords = db.customPasswords || {};
 db.credentials = db.credentials || [...defaultCredentials];
 db.distributorCredentials = db.distributorCredentials || [...defaultDistributorCredentials];
-if(!db.receptionCentres)db.receptionCentres=[];
 if(!db.bookRequirements)db.bookRequirements=[];
 if(!db.distributorStatus)db.distributorStatus=[];
+db.bookRequirements.forEach(r => {
+  if (!r.status) {
+    let latest = db.distributorStatus.find(x => x.district === r.district);
+    r.status = (latest && latest.sent) ? "Sent" : "Pending";
+  }
+});
 db.bookPrice = (db.bookPrice === 135) ? 60 : (db.bookPrice || 60);
 let session=JSON.parse(sessionStorage.getItem("gd_session_v5")||"null")||{role:"",district:"",username:"",booksSent:false};
 
@@ -763,10 +785,10 @@ function roleChange(){
    sessionInfo.innerHTML="<b>Final Admin Login</b><br>Enter your administration credentials.";
  } else if(r==="district") {
    sessionInfo.innerHTML="<b>District Admin Login</b><br>Select your district and enter credentials.";
- } else if(r==="distributor") {
-   sessionInfo.innerHTML="<b>Distributor Login</b><br>Enter your distributor credentials to confirm dispatches.";
  } else if(r==="special") {
    sessionInfo.innerHTML="<b>Payment Admin Login</b><br>Enter your VGS books or APMF amount credentials.";
+ } else if(r==="distributor") {
+   sessionInfo.innerHTML="<b>Distributor Login</b><br>Enter your distributor credentials to confirm dispatches.";
  } else {
    sessionInfo.innerHTML="Please login to continue.";
  }
@@ -840,15 +862,16 @@ function updateSessionInfo(){
     roleChange();
     return;
   }
+  const isSpecialAdmin = session.username === "vgs_books" || session.username === "apmf_amount";
   if(session.role==="final")sessionInfo.innerHTML="<b>Final Admin</b><br>Full access: add, edit, delete, audit and reports.";
-  else if(session.role==="district")sessionInfo.innerHTML="<b>District Admin</b><br>"+esc(session.district)+"<br><br>✔ Add distribution entries<br>✔ Upload receipts<br>✔ Record payments<br>✖ Cannot edit existing entries";
-  else if(session.role==="distributor") {
-    let sentCount = districts.filter(d => {
-      let latest = db.distributorStatus.find(x => x.district === d);
-      return latest && latest.sent;
-    }).length;
-    sessionInfo.innerHTML="<b>Distributor</b><br><br><span style='color:#2563eb;font-weight:800'>Dispatch Progress: " + sentCount + "/" + districts.length + " Districts Sent</span>";
+  else if(session.role==="district") {
+    if (isSpecialAdmin) {
+      sessionInfo.innerHTML="<b>State Admin</b><br>"+esc(session.district)+"<br><br>✔ View uploaded receipts<br>✔ Record payments";
+    } else {
+      sessionInfo.innerHTML="<b>District Admin</b><br>"+esc(session.district)+"<br><br>✔ Add distribution entries<br>✔ Upload receipts<br>✔ Record payments<br>✖ Cannot edit existing entries";
+    }
   }
+  else if(session.role==="distributor")sessionInfo.innerHTML="<b>Distributor Login</b><br>Enter your distributor credentials to confirm dispatches.";
   else sessionInfo.innerHTML="Please login to continue.";
   
   const settingsInfoEl = document.getElementById("settingsInfoArea");
@@ -860,16 +883,24 @@ function updateSessionInfo(){
         <p><b>Districts:</b> 28</p>
       `;
     } else if (session.role === "district") {
-      settingsInfoEl.innerHTML = `
-        <p><b>Role:</b> District Administrator</p>
-        <p><b>District:</b> ${esc(session.district)}</p>
-        <p><b>Academic Year:</b> 2026–27</p>
-      `;
+      if (isSpecialAdmin) {
+        settingsInfoEl.innerHTML = `
+          <p><b>Role:</b> State Administrator</p>
+          <p><b>Account:</b> ${esc(session.district)}</p>
+          <p><b>Academic Year:</b> 2026–27</p>
+        `;
+      } else {
+        settingsInfoEl.innerHTML = `
+          <p><b>Role:</b> District Administrator</p>
+          <p><b>District:</b> ${esc(session.district)}</p>
+          <p><b>Academic Year:</b> 2026–27</p>
+        `;
+      }
     } else if (session.role === "distributor") {
       settingsInfoEl.innerHTML = `
         <p><b>Role:</b> Books Distributor</p>
-        <p><b>Access Scope:</b> Book Dispatch Confirmation</p>
         <p><b>Academic Year:</b> 2026–27</p>
+        <p><b>Scope:</b> All Districts Dispatch Confirmation</p>
       `;
     }
   }
@@ -891,42 +922,25 @@ function canAdd(d){
 function canEdit(){return session.role==="final"}
 function visibleEntries(){return scopedRowsGD(db.entries||[])}
 function visiblePayments(){return scopedRowsGD(db.payments||[])}
-function visibleReceipts(){return scopedRowsGD(db.receipts||[])}
+function visibleReceipts(){
+  let rows = db.receipts || [];
+  if (session.username === "vgs_books") {
+    return rows.filter(x => x.paymentTo === "vgs_books");
+  }
+  if (session.username === "apmf_amount") {
+    return rows.filter(x => x.paymentTo === "apmf_amount");
+  }
+  if (session.role === "district") {
+    return rows.filter(x => x.district === session.district);
+  }
+  return rows;
+}
 function showTab(id,btn){
   document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
   const target=document.getElementById(id); if(target) target.classList.add("active");
   document.querySelectorAll(".tabs .tab").forEach(x=>x.classList.remove("active"));
   if(btn) btn.classList.add("active");
   window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function toggleDistrictDispatch(district, currentStatus) {
-  const newStatus = !currentStatus;
-  let x = {
-    id: generateUUID(),
-    district: district,
-    sent: newStatus,
-    time: new Date().toLocaleString(),
-    by: session.username
-  };
-  db.distributorStatus.unshift(x);
-  db.distributorStatus = db.distributorStatus.slice(0, 1000);
-  audit((newStatus ? "Confirmed books sent" : "Confirmed books not yet sent") + " for " + district);
-  save("distributorStatus", x);
-  renderAll();
-  toast("Dispatch status updated");
-}
-
-function filterDistributorTable() {
-  const q = (document.getElementById("distributorSearch")?.value || "").toLowerCase().trim();
-  const rows = document.querySelectorAll("#distributorTableBody tr");
-  rows.forEach(r => {
-    const d = r.getAttribute("data-district") || "";
-    r.style.display = d.includes(q) ? "" : "none";
-  });
-}
-function toggleAllPrint(master) {
-  document.querySelectorAll(".print-select-checkbox").forEach(cb => cb.checked = master.checked);
 }
 
 function getDistrictReceptionCentresHtml(d) {
@@ -1021,226 +1035,13 @@ function printReceptionCentres() {
     document.getElementById("printReceptionCentres").classList.remove("print-active");
   }, 600);
 }
-
-function printDispatchSummary() {
-  let checkedDistricts = [...document.querySelectorAll(".print-select-checkbox:checked")].map(cb => cb.getAttribute("data-district"));
-  let printedCount = 0;
-  let content = `<div style="font-family:sans-serif; padding:20px;">`;
-  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 20px;">📦 All Districts Dispatch &amp; Books Requirements Summary</h2>`;
-  content += `
-    <table style="width:100%; border-collapse:collapse; font-size:12px;">
-      <thead>
-        <tr style="background:#f1f5f9;">
-          <th style="border:1px solid #cbd5e1; padding:8px; text-align:left; width:8%;">S.No.</th>
-          <th style="border:1px solid #cbd5e1; padding:8px; text-align:left; width:25%;">District</th>
-          <th style="border:1px solid #cbd5e1; padding:8px; text-align:right; width:17%;">Total Requirements</th>
-          <th style="border:1px solid #cbd5e1; padding:8px; text-align:center; width:20%;">Dispatch Status</th>
-          <th style="border:1px solid #cbd5e1; padding:8px; text-align:left; width:30%;">Last Updated / Details</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  let activeDistricts = districts.filter(d => d !== "VGS books" && d !== "APMF amount");
-  let sNo = 1;
-  activeDistricts.forEach((d) => {
-    if (checkedDistricts.length > 0 && !checkedDistricts.includes(d)) return;
-    printedCount++;
-
-    let reqs = db.bookRequirements.filter(x => x.district === d);
-    let reqTotal = reqs.reduce((sum, x) => sum + Number(x.total || 0), 0);
-
-    if (reqTotal === 0) {
-      let ents = db.entries.filter(x => x.district === d);
-      reqTotal = ents.reduce((sum, x) => sum + Number(x.total || 0), 0);
-    }
-
-    let latest = db.distributorStatus.find(x => x.district === d);
-    let isSent = latest ? latest.sent : false;
-    let statusText = isSent ? "✔ Sent" : "⏳ Pending";
-    let statusTime = latest ? latest.time : "—";
-    let updatedBy = latest ? `by ${latest.by}` : "";
-
-    content += `
-      <tr>
-        <td style="border:1px solid #cbd5e1; padding:8px;">${sNo++}</td>
-        <td style="border:1px solid #cbd5e1; padding:8px;"><b>${esc(d)}</b></td>
-        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right;"><b>${reqTotal.toLocaleString("en-IN")}</b></td>
-        <td style="border:1px solid #cbd5e1; padding:8px; text-align:center;">
-          <span style="padding: 4px 8px; border-radius: 99px; font-size: 10px; font-weight: bold; ${isSent ? 'background:#dcfce7; color:#166534;' : 'background:#fff7ed; color:#9a3412;'}">${statusText}</span>
-        </td>
-        <td style="border:1px solid #cbd5e1; padding:8px; font-size:11px; color:#475569;">${esc(statusTime)} ${esc(updatedBy)}</td>
-      </tr>
-    `;
-  });
-
-  if (printedCount === 0) {
-    content += `<tr><td colspan="5" style="text-align:center; padding:40px; color:#64748b;">No districts selected to print.</td></tr>`;
-  }
-
-  content += `
-      </tbody>
-    </table>
-  </div>
-  `;
-
-  document.getElementById("printDispatchSummaryContent").innerHTML = content;
-
-  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
-  document.getElementById("printDispatchSummary").classList.add("print-active");
-  document.title = "Ganitha_Deepthi_Dispatch_Summary";
-  window.print();
-  setTimeout(() => {
-    document.getElementById("printDispatchSummary").classList.remove("print-active");
-  }, 600);
-}
-
-function renderDistributorConfirmation(){
-  const card=document.getElementById("distributorConfirmCard");
-  if(!card) return;
-  const isDist=session.role==="distributor";
-  card.classList.toggle("hidden",!isDist);
-  if(!isDist) return;
-
-  let activeDistricts = districts.filter(d => d !== "VGS books" && d !== "APMF amount");
-  let rows = activeDistricts.map((d, i) => {
-    let reqs = db.bookRequirements.filter(x => x.district === d);
-    let reqTotal = reqs.reduce((sum, x) => sum + Number(x.total || 0), 0);
-
-    if (reqTotal === 0) {
-      let ents = db.entries.filter(x => x.district === d);
-      reqTotal = ents.reduce((sum, x) => sum + Number(x.total || 0), 0);
-    }
-
-    let latest = db.distributorStatus.find(x => x.district === d);
-    let isSent = latest ? latest.sent : false;
-    let statusTime = latest ? latest.time : "";
-
-    return {
-      sNo: i + 1,
-      district: d,
-      total: reqTotal,
-      isSent: isSent,
-      time: statusTime
-    };
-  });
-
-  card.style.background = "#fff";
-  card.style.borderColor = "var(--line)";
-  card.innerHTML = `
-    <div class="head" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-      <div>
-        <h2 style="font-size:20px; color:#111d55;">📦 All Districts Dispatch &amp; Books Requirements</h2>
-        <div class="small" style="margin-top:4px; color:#64748b;">Confirm dispatch status and view book requirements for all 28 districts.</div>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <button class="btn printbtn" onclick="printReceptionCentres()" style="padding:6px 12px; font-size:13px; font-weight:800;">🖨 Print Reception Centres</button>
-        <button class="btn printbtn" onclick="printDispatchSummary()" style="padding:6px 12px; font-size:13px; font-weight:800; background:#7c3aed; color:#fff;">🖨 Print Dispatch Summary</button>
-        <input id="distributorSearch" placeholder="Search district..." oninput="filterDistributorTable()" style="max-width:200px; padding:6px 10px; font-size:12px;">
-      </div>
-    </div>
-    <div style="overflow:auto; max-height:500px; border:1px solid #e2e8f0; border-radius:8px;">
-      <table style="width:100%; border-collapse:collapse; background:#fff; font-size:14px;">
-        <thead style="background:#f8fafc; position:sticky; top:0; z-index:2;">
-          <tr>
-            <th style="padding:8px 10px; width:4%; text-align:center;"><input type="checkbox" id="selectAllPrint" onchange="toggleAllPrint(this)" checked style="transform: scale(1.15); cursor: pointer;"></th>
-            <th style="padding:8px 10px; width:5%;">S.No.</th>
-            <th style="padding:8px 10px; width:15%;">District</th>
-            <th style="padding:8px 10px; text-align:left; width:46%;">Reception Centre Details &amp; Books</th>
-            <th style="padding:8px 10px; text-align:right; width:10%;">District Total Books</th>
-            <th style="padding:8px 10px; text-align:center; width:10%;">Dispatch Status</th>
-            <th style="padding:8px 10px; text-align:center; width:10%;">Action</th>
-          </tr>
-        </thead>
-        <tbody id="distributorTableBody">
-          ${rows.map(x => `
-            <tr data-district="${x.district.toLowerCase()}">
-              <td style="padding:8px 10px; text-align:center;"><input type="checkbox" class="print-select-checkbox" data-district="${esc(x.district)}" checked style="transform: scale(1.15); cursor: pointer;"></td>
-              <td style="padding:8px 10px;">${x.sNo}</td>
-              <td style="padding:8px 10px;"><b>${esc(x.district)}</b></td>
-              <td style="padding:8px 10px; text-align:left;">${getDistrictReceptionCentresHtml(x.district)}</td>
-              <td style="padding:8px 10px; text-align:right;"><b>${x.total.toLocaleString("en-IN") || "0"}</b></td>
-              <td style="padding:8px 10px; text-align:center;">
-                ${x.isSent 
-                  ? `<span class="badge done">✔ Sent</span><div class="small" style="font-size:11px; color:#64748b; margin-top:2px;">${esc(x.time)}</div>` 
-                  : `<span class="badge pending">⏳ Pending</span>`
-                }
-              </td>
-              <td style="padding:8px 10px; text-align:center;">
-                <button class="btn ${x.isSent ? 'secondary' : 'primary'}" onclick="toggleDistrictDispatch('${esc(x.district)}', ${x.isSent})" style="padding:4px 8px; font-size:13px;">
-                  ${x.isSent ? 'Mark Pending' : 'Mark Sent'}
-                </button>
-              </td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    </div>
-  `;
-}
-
-function dashboardUnits(){
-  if (session.role === "distributor") {
-    let sentCount = 0;
-    districts.forEach(d => {
-      let latest = db.distributorStatus.find(x => x.district === d);
-      if (latest && latest.sent) sentCount++;
-    });
-    return {totalUnits: districts.length, sentUnits: sentCount, pending: districts.length - sentCount};
-  }
-  // Final Admin: use district-level counting (same as distributor view)
-  if (session.role === "final") {
-    const activeDistricts = districts.filter(d => d !== "VGS books" && d !== "APMF amount");
-    let sentCount = 0;
-    activeDistricts.forEach(d => {
-      const latest = db.distributorStatus.find(x => x.district === d);
-      if (latest && latest.sent) sentCount++;
-    });
-    return {totalUnits: activeDistricts.length, sentUnits: sentCount, pending: activeDistricts.length - sentCount};
-  }
-  // District Admin: school/centre-level counting
-  const scopeDistrict=session.district||"";
-  let centres=db.receptionCentres.filter(x=>x.district===scopeDistrict);
-  let entries=db.entries.filter(x=>x.district===scopeDistrict);
-  let names=new Set();
-  centres.forEach(x=>{if(x.centreName)names.add(x.district+"|"+x.centreName)});
-  entries.forEach(x=>{if(x.point)names.add(x.district+"|"+x.point)});
-  let totalUnits=names.size;
-  if(!totalUnits) totalUnits=entries.length;
-  let sentUnits=entries.filter(x=>x.completed==="Yes").length;
-  // Also count if distributor confirmed this district as sent
-  const latestForDistrict = db.distributorStatus.find(x => x.district === scopeDistrict);
-  if (latestForDistrict && latestForDistrict.sent) {
-    sentUnits = Math.max(sentUnits, totalUnits);
-  }
-  sentUnits=Math.min(sentUnits,totalUnits||sentUnits);
-  return {totalUnits,sentUnits,pending:Math.max(0,totalUnits-sentUnits)};
-}
 function renderDashboardWidgets(){
-  renderDistributorConfirmation();
-  const units=dashboardUnits();
   const e=visibleEntries(), p=visiblePayments();
   const reqs = scopedRowsGD(db.bookRequirements || []);
   let totalBooks = reqs.reduce((a, x) => a + Number(x.total || 0), 0);
   if (totalBooks === 0) {
     totalBooks = e.reduce((a, x) => a + money(x.total), 0);
   }
-  // Books distributed: entries marked completed OR from distributor-confirmed districts
-  let distributedBooks=e.filter(x=>x.completed==="Yes").reduce((a,x)=>a+money(x.total),0);
-  if (distributedBooks === 0) {
-    // Use latest distributorStatus per district (same logic as distributor view)
-    const sentDistricts = new Set();
-    districts.filter(d => d !== "VGS books" && d !== "APMF amount").forEach(d => {
-      const latest = db.distributorStatus.find(x => x.district === d);
-      if (latest && latest.sent) sentDistricts.add(d);
-    });
-    const sentReqs = scopedRowsGD(db.bookRequirements || []).filter(x => sentDistricts.has(x.district));
-    distributedBooks = sentReqs.reduce((a, x) => a + Number(x.total || 0), 0);
-    if (distributedBooks === 0) {
-      distributedBooks = e.filter(x => sentDistricts.has(x.district)).reduce((a, x) => a + money(x.total), 0);
-    }
-  }
-  const pct=units.totalUnits?Math.round(units.sentUnits/units.totalUnits*100):0;
 
   const r = visibleReceipts();
   const paidAmount = p.reduce((a, x) => a + money(x.amount), 0)
@@ -1249,10 +1050,6 @@ function renderDashboardWidgets(){
   const balanceAmount = totalDues - paidAmount;
 
   books.textContent=totalBooks.toLocaleString("en-IN");
-  distributed.textContent=distributedBooks.toLocaleString("en-IN");
-  sentSchools.textContent=units.sentUnits.toLocaleString("en-IN");
-  pendingSchools.textContent=units.pending.toLocaleString("en-IN");
-  activeDistributors.textContent=[...new Set(db.distributorStatus.map(x=>x.by).filter(Boolean))].length;
 
   const paidKpiEl = document.getElementById("paidAmountKpi");
   if (paidKpiEl) paidKpiEl.textContent = "₹" + paidAmount.toLocaleString("en-IN");
@@ -1261,45 +1058,28 @@ function renderDashboardWidgets(){
   if (balanceKpiEl) {
     balanceKpiEl.textContent = (balanceAmount < 0 ? "-" : "") + "₹" + Math.abs(balanceAmount).toLocaleString("en-IN");
   }
-  sentPercent.textContent=pct+"% Completed";
-  pendingPercent.textContent=(100-pct)+"% Remaining";
-  donutPercent.textContent=pct+"%";
-  legendSent.textContent=units.sentUnits.toLocaleString("en-IN");
-  legendPending.textContent=units.pending.toLocaleString("en-IN");
-  legendTotal.textContent=units.totalUnits.toLocaleString("en-IN");
-  distributionDonut.style.background=`conic-gradient(#22c55e 0deg ${pct*3.6}deg,#f59e0b ${pct*3.6}deg 360deg)`;
 
   dashboardDate.textContent=new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric",weekday:"long"});
 
-  const acts=db.audit.filter(x=>session.role!=="district"&&session.role!=="distributor"||x.district===session.district).slice(0,5);
+  const acts=db.audit.filter(x=>session.role!=="district"||x.district===session.district).slice(0,5);
   recentActivity.innerHTML=acts.length?acts.map(x=>`<div class="activity"><div class="activity-icon">✓</div><div><b>${esc(x.action)}</b><small>${esc(x.user||"System")} ${x.district&&x.district!=="All"?"• "+esc(x.district):""}</small></div><time>${esc(x.time||"")}</time></div>`).join(""):`<div class="empty" style="padding:25px 8px"><div class="big">◷</div>No recent activity yet.</div>`;
 
   const notices=[];
-  if(units.pending) notices.push(`<div class="notice"><div class="ni">⚠</div><div><b>${units.pending}</b> school/centre record(s) pending to confirm book receipt.</div></div>`);
+  const units=dashboardUnits();
+  if(units.pending) notices.push(`<div class="notice"><div class="ni">⚠</div><div><b>${units.pending}</b> district/centre record(s) pending to confirm book receipt.</div></div>`);
   if(db.receipts.length) notices.push(`<div class="notice info"><div class="ni">ⓘ</div><div>${db.receipts.length} receipt record(s) available for audit.</div></div>`);
   if(p.length) notices.push(`<div class="notice ok"><div class="ni">✓</div><div>Payment records total <b>₹${p.reduce((a,x)=>a+money(x.amount),0).toLocaleString("en-IN")}</b>.</div></div>`);
   if(!notices.length) notices.push(`<div class="notice info"><div class="ni">ⓘ</div><div>No new notifications.</div></div>`);
   notifications.innerHTML=notices.join("");
 
-  sideRole.textContent=session.role==="final"?"Final Admin":session.role==="district"?"District Admin":session.role==="distributor"?"Distributor":"—";
+  const isSpecialAdmin = session.username === "vgs_books" || session.username === "apmf_amount";
+  sideRole.textContent=session.role==="final"?"Final Admin":session.role==="district"?(isSpecialAdmin?"State Admin":"District Admin"):session.role==="distributor"?"Distributor":"—";
   sideDistrict.textContent=session.role==="distributor"?"—":(session.district||"All Districts");
   sideLoginTime.textContent=session.loginTime||"Current session";
-  topRole.textContent=session.role==="final"?"Final Admin":session.role==="district"?"District Admin":session.role==="distributor"?"Distributor":"User";
+  topRole.textContent=session.role==="final"?"Final Admin":session.role==="district"?(isSpecialAdmin?"State Admin":"District Admin"):session.role==="distributor"?"Distributor":"User";
   topDistrict.textContent=session.role==="distributor"?"":(session.district||"All Districts");
-}
-function quickDistributorAction(){
-  if(session.role!=="distributor"){
-    alert("This action is available to a Distributor after Distributor login.");
-    return;
-  }
-  if(!confirm("Mark books as SENT for "+session.district+"?")) return;
-  session.booksSent=true;
-  let x = {id:generateUUID(),district:session.district,sent:true,time:new Date().toLocaleString(),by:session.username};
-  db.distributorStatus.unshift(x);
-  db.distributorStatus=db.distributorStatus.slice(0,500);
-  sessionStorage.setItem("gd_session_v5",JSON.stringify(session));
-  audit("Marked books as sent");
-  save("distributorStatus", x);renderAll();toast("Books marked as sent");
+
+  renderDistributorConfirmation();
 }
 
 function editLogin(username, type) {
@@ -1540,6 +1320,433 @@ function deleteLogin(username) {
   toast("User login deleted successfully.");
 }
 
+function toggleDistrictDispatch(district, currentStatus) {
+  const newStatus = !currentStatus;
+  let x = {
+    id: generateUUID(),
+    district: district,
+    sent: newStatus,
+    time: new Date().toLocaleString(),
+    by: session.username
+  };
+  db.distributorStatus.unshift(x);
+  db.distributorStatus = db.distributorStatus.slice(0, 1000);
+  save("distributorStatus", x);
+
+  // Update all book requirements for this district
+  const reqs = db.bookRequirements.filter(y => y.district === district);
+  reqs.forEach(r => {
+    r.status = newStatus ? "Sent" : "Pending";
+    save("requirement", r);
+  });
+
+  audit((newStatus ? "Confirmed books sent" : "Confirmed books not yet sent") + " for " + district);
+  renderAll();
+  toast("Dispatch status updated");
+}
+
+function toggleRequirementDispatch(reqId, currentStatus) {
+  const req = db.bookRequirements.find(x => x.id === reqId);
+  if (!req) return;
+  req.status = currentStatus === "Sent" ? "Pending" : "Sent";
+  
+  audit("Marked books requirement for " + req.centreName + " (" + req.district + ") as " + req.status);
+  save("requirement", req);
+  
+  updateDistributorStatusFromRequirements(req.district);
+  
+  renderAll();
+  toast("Requirement marked as " + req.status);
+}
+
+function updateDistributorStatusFromRequirements(district) {
+  const reqs = db.bookRequirements.filter(x => x.district === district);
+  const allSent = reqs.length > 0 && reqs.every(x => x.status === "Sent");
+  
+  let latest = db.distributorStatus.find(x => x.district === district);
+  if (latest) {
+    latest.sent = allSent;
+    latest.time = new Date().toLocaleString();
+    latest.by = session.username || "distributor";
+    save("distributorStatus", latest);
+  } else {
+    let x = {
+      id: generateUUID(),
+      district: district,
+      sent: allSent,
+      time: new Date().toLocaleString(),
+      by: session.username || "distributor"
+    };
+    db.distributorStatus.unshift(x);
+    save("distributorStatus", x);
+  }
+}
+
+function filterDistributorTable() {
+  const q = (document.getElementById("distributorSearch")?.value || "").toLowerCase().trim();
+  const rows = document.querySelectorAll(".distributor-row");
+  rows.forEach(r => {
+    const text = r.textContent.toLowerCase();
+    r.style.display = text.includes(q) ? "" : "none";
+  });
+}
+
+function toggleAllPrint(master) {
+  document.querySelectorAll(".print-select-checkbox").forEach(cb => cb.checked = master.checked);
+}
+
+function getDistrictReceptionCentresHtml(d) {
+  let centres = db.receptionCentres.filter(x => x.district === d);
+  if (centres.length === 0) {
+    return `<span style="color:#64748b; font-style:italic; font-size:12px;">No reception centres registered yet</span>`;
+  }
+  return centres.map(c => {
+    let reqs = db.bookRequirements.filter(r => r.district === d && r.centreName === c.centreName);
+    let em = reqs.reduce((sum, r) => sum + Number(r.em || 0), 0);
+    let tm = reqs.reduce((sum, r) => sum + Number(r.tm || 0), 0);
+    let total = reqs.reduce((sum, r) => sum + Number(r.total || 0), 0);
+    return `
+      <div style="margin-bottom: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; font-size:12px;">
+        <div style="font-weight: 700; color: #10265c; margin-bottom: 2px;">🏫 ${esc(c.centreName)}</div>
+        <div style="color: #64748b; margin-bottom: 2px;">📍 ${esc(c.address)}</div>
+        <div style="color: #334155; margin-bottom: 4px;">👤 In-charge: <b>${esc(c.incharge)}</b> (${esc(c.mobile)})</div>
+        <div style="font-weight: 600; color: #2563eb; background:#eff6ff; padding:2px 6px; border-radius:4px; display:inline-block;">
+          Books: EM: ${em.toLocaleString("en-IN")}, TM: ${tm.toLocaleString("en-IN")}, Total: <b>${total.toLocaleString("en-IN")}</b>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function printReceptionCentres() {
+  let checkedDistricts = [...document.querySelectorAll(".print-select-checkbox:checked")].map(cb => cb.getAttribute("data-district"));
+  let printedCount = 0;
+  let content = `<div style="font-family:sans-serif; padding:20px;">`;
+  districts.forEach(d => {
+    if (checkedDistricts.length > 0 && !checkedDistricts.includes(d)) return;
+    let centres = db.receptionCentres.filter(c => c.district === d);
+    if (centres.length === 0) return;
+    printedCount++;
+    
+    content += `
+      <div style="margin-bottom: 30px; page-break-inside: avoid;">
+        <h3 style="border-bottom: 2px solid #10265c; padding-bottom: 5px; color: #10265c; margin-bottom:10px;">🏢 District: ${esc(d)}</h3>
+        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">Reception Centre</th>
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:25%;">Address</th>
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">In-charge &amp; Mobile</th>
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">EM Books</th>
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">TM Books</th>
+              <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">Total Books</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+    
+    centres.forEach((c, idx) => {
+      let reqs = db.bookRequirements.filter(r => r.district === d && r.centreName === c.centreName);
+      let em = reqs.reduce((sum, r) => sum + Number(r.em || 0), 0);
+      let tm = reqs.reduce((sum, r) => sum + Number(r.tm || 0), 0);
+      let total = reqs.reduce((sum, r) => sum + Number(r.total || 0), 0);
+      
+      content += `
+        <tr>
+          <td style="border:1px solid #cbd5e1; padding:6px;">${idx + 1}</td>
+          <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(c.centreName)}</b></td>
+          <td style="border:1px solid #cbd5e1; padding:6px;">${esc(c.address)}</td>
+          <td style="border:1px solid #cbd5e1; padding:6px;">${esc(c.incharge)}<br><small style="color:#64748b;">${esc(c.mobile)}</small></td>
+          <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+          <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+          <td style="border:1px solid #cbd5e1; padding:6px; text-align:right; text-align:right;"><b>${total.toLocaleString("en-IN")}</b></td>
+        </tr>
+      `;
+    });
+    
+    content += `
+          </tbody>
+        </table>
+      </div>
+    `;
+  });
+  
+  if (printedCount === 0) {
+    content += `<div style="text-align:center; padding:40px; color:#64748b;">No reception centres entered in the database.</div>`;
+  }
+  
+  content += `</div>`;
+  
+  document.getElementById("printReceptionCentresContent").innerHTML = content;
+  
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printReceptionCentres").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Reception_Centres";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printReceptionCentres").classList.remove("print-active");
+  }, 600);
+}
+
+function printDispatchSummary() {
+  let checkedDistricts = [...document.querySelectorAll(".print-select-checkbox:checked")].map(cb => cb.getAttribute("data-district"));
+  let printedCount = 0;
+  let content = `<div style="font-family:sans-serif; padding:20px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 20px;">📦 All Districts Dispatch &amp; Books Requirements Summary</h2>`;
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th style="border:1px solid #cbd5e1; padding:8px; text-align:left; width:8%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:8px; text-align:left; width:25%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:8px; text-align:right; width:17%;">Total Requirements</th>
+          <th style="border:1px solid #cbd5e1; padding:8px; text-align:center; width:20%;">Dispatch Status</th>
+          <th style="border:1px solid #cbd5e1; padding:8px; text-align:left; width:30%;">Last Updated / Details</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  let activeDistricts = districts.filter(d => d !== "VGS books" && d !== "APMF amount");
+  let sNo = 1;
+  activeDistricts.forEach((d) => {
+    if (checkedDistricts.length > 0 && !checkedDistricts.includes(d)) return;
+    printedCount++;
+
+    let reqs = db.bookRequirements.filter(x => x.district === d);
+    let reqTotal = reqs.reduce((sum, x) => sum + Number(x.total || 0), 0);
+
+    if (reqTotal === 0) {
+      let ents = db.entries.filter(x => x.district === d);
+      reqTotal = ents.reduce((sum, x) => sum + Number(x.total || 0), 0);
+    }
+
+    let latest = db.distributorStatus.find(x => x.district === d);
+    let isSent = latest ? latest.sent : false;
+    let statusText = isSent ? "✔ Sent" : "⏳ Pending";
+    let statusTime = latest ? latest.time : "—";
+    let updatedBy = latest ? `by ${latest.by}` : "";
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:8px;">${sNo++}</td>
+        <td style="border:1px solid #cbd5e1; padding:8px;"><b>${esc(d)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right;"><b>${reqTotal.toLocaleString("en-IN")}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:center;">
+          <span style="padding: 4px 8px; border-radius: 99px; font-size: 10px; font-weight: bold; ${isSent ? 'background:#dcfce7; color:#166534;' : 'background:#fff7ed; color:#9a3412;'}">${statusText}</span>
+        </td>
+        <td style="border:1px solid #cbd5e1; padding:8px; font-size:11px; color:#475569;">${esc(statusTime)} ${esc(updatedBy)}</td>
+      </tr>
+    `;
+  });
+
+  if (printedCount === 0) {
+    content += `<tr><td colspan="5" style="text-align:center; padding:40px; color:#64748b;">No districts selected to print.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printDispatchSummaryContent").innerHTML = content;
+
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printDispatchSummary").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Dispatch_Summary";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printDispatchSummary").classList.remove("print-active");
+  }, 600);
+}
+
+function renderDistributorConfirmation(){
+  const card=document.getElementById("distributorConfirmCard");
+  if(!card) return;
+  const isDist=session.role==="distributor";
+  card.classList.toggle("hidden",!isDist);
+  if(!isDist) return;
+
+  const reqs = db.bookRequirements || [];
+  
+  // Filter requirements into pending and sent
+  const pendingReqs = reqs.filter(x => (x.status || "Pending") === "Pending");
+  const sentReqs = reqs.filter(x => x.status === "Sent");
+
+  // Build pending table HTML
+  let pendingHtml = "";
+  if (pendingReqs.length === 0) {
+    pendingHtml = `<div class="empty" style="padding:20px; background:#fffbf0; border:1px solid #fce8bd; border-radius:8px; color:#b45309;">
+      <b>🎉 All dispatches completed! No pending book requirements.</b>
+    </div>`;
+  } else {
+    pendingHtml = `
+      <div style="overflow:auto; max-height:350px; border:1px solid #fce8bd; border-radius:8px; margin-bottom: 20px;">
+        <table style="width:100%; border-collapse:collapse; background:#fff; font-size:13px;">
+          <thead style="background:#fffbeb; position:sticky; top:0; z-index:2; border-bottom:2px solid #fce8bd;">
+            <tr>
+              <th style="padding:10px; width:5%; text-align:left;">S.No.</th>
+              <th style="padding:10px; width:15%; text-align:left;">District</th>
+              <th style="padding:10px; width:20%; text-align:left;">Reception Centre</th>
+              <th style="padding:10px; width:20%; text-align:left;">In-charge &amp; Mobile</th>
+              <th style="padding:10px; width:10%; text-align:right;">EM Books</th>
+              <th style="padding:10px; width:10%; text-align:right;">TM Books</th>
+              <th style="padding:10px; width:10%; text-align:right;">Total Books</th>
+              <th style="padding:10px; width:10%; text-align:center;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${pendingReqs.map((x, i) => {
+              let em = Number(x.em || 0);
+              let tm = Number(x.tm || 0);
+              let tot = Number(x.total || (em + tm));
+              let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+              let mobile = centre ? centre.mobile : "—";
+              return `
+                <tr class="distributor-row" style="border-bottom:1px solid #edf1f6;">
+                  <td style="padding:10px;">${i + 1}</td>
+                  <td style="padding:10px;"><b>${esc(x.district)}</b></td>
+                  <td style="padding:10px;"><b>${esc(x.centreName)}</b></td>
+                  <td style="padding:10px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">${esc(mobile)}</small></td>
+                  <td style="padding:10px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+                  <td style="padding:10px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+                  <td style="padding:10px; text-align:right; color:#2563eb;"><b>${tot.toLocaleString("en-IN")}</b></td>
+                  <td style="padding:10px; text-align:center;">
+                    <button class="btn primary" onclick="toggleRequirementDispatch('${esc(x.id)}', 'Pending')" style="padding:5px 10px; font-size:12px; font-weight:800; background:#f59e0b; color:#fff;">
+                      Mark Sent 📦
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  // Build sent table HTML
+  let sentHtml = "";
+  if (sentReqs.length === 0) {
+    sentHtml = `<div class="empty" style="padding:20px; background:#f2fbf5; border:1px solid #cdeed7; border-radius:8px; color:#15803d;">
+      <b>No sent book requirements recorded yet.</b>
+    </div>`;
+  } else {
+    sentHtml = `
+      <div style="overflow:auto; max-height:350px; border:1px solid #cdeed7; border-radius:8px;">
+        <table style="width:100%; border-collapse:collapse; background:#fff; font-size:13px;">
+          <thead style="background:#f2fbf5; position:sticky; top:0; z-index:2; border-bottom:2px solid #cdeed7;">
+            <tr>
+              <th style="padding:10px; width:5%; text-align:left;">S.No.</th>
+              <th style="padding:10px; width:15%; text-align:left;">District</th>
+              <th style="padding:10px; width:20%; text-align:left;">Reception Centre</th>
+              <th style="padding:10px; width:20%; text-align:left;">In-charge &amp; Mobile</th>
+              <th style="padding:10px; width:10%; text-align:right;">EM Books</th>
+              <th style="padding:10px; width:10%; text-align:right;">TM Books</th>
+              <th style="padding:10px; width:10%; text-align:right;">Total Books</th>
+              <th style="padding:10px; width:10%; text-align:center;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sentReqs.map((x, i) => {
+              let em = Number(x.em || 0);
+              let tm = Number(x.tm || 0);
+              let tot = Number(x.total || (em + tm));
+              let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+              let mobile = centre ? centre.mobile : "—";
+              return `
+                <tr class="distributor-row" style="border-bottom:1px solid #edf1f6;">
+                  <td style="padding:10px;">${i + 1}</td>
+                  <td style="padding:10px;"><b>${esc(x.district)}</b></td>
+                  <td style="padding:10px;"><b>${esc(x.centreName)}</b></td>
+                  <td style="padding:10px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">${esc(mobile)}</small></td>
+                  <td style="padding:10px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+                  <td style="padding:10px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+                  <td style="padding:10px; text-align:right; color:#16a34a;"><b>${tot.toLocaleString("en-IN")}</b></td>
+                  <td style="padding:10px; text-align:center;">
+                    <button class="btn secondary" onclick="toggleRequirementDispatch('${esc(x.id)}', 'Sent')" style="padding:5px 10px; font-size:12px; font-weight:800; background:#eef2ff; color:#3730a3;">
+                      Mark Pending ⏳
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  card.style.background = "#fff";
+  card.style.borderColor = "var(--line)";
+  card.innerHTML = `
+    <div class="head" style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div>
+        <h2 style="font-size:22px; color:#111d55; font-weight:800;">📦 Books Dispatch Management</h2>
+        <div class="small" style="margin-top:4px; color:#64748b;">Confirm dispatch status and view book requirements for all districts.</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <button class="btn printbtn" onclick="printReceptionCentres()" style="padding:6px 12px; font-size:13px; font-weight:800;">🖨 Print Reception Centres</button>
+        <button class="btn printbtn" onclick="printDispatchSummary()" style="padding:6px 12px; font-size:13px; font-weight:800; background:#7c3aed; color:#fff;">🖨 Print Dispatch Summary</button>
+        <input id="distributorSearch" placeholder="Search centre / district / in-charge..." oninput="filterDistributorTable()" style="max-width:250px; padding:6px 10px; font-size:12px;">
+      </div>
+    </div>
+    
+    <div style="margin-bottom:25px;">
+      <h3 style="font-size:16px; color:#b45309; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+        ⏳ పంపించాల్సిన Books (Books to be Sent - Pending Dispatch)
+        <span class="badge pending" style="font-size:12px; padding:2px 8px;">${pendingReqs.length} Pending</span>
+      </h3>
+      ${pendingHtml}
+    </div>
+    
+    <div>
+      <h3 style="font-size:16px; color:#15803d; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+        ✔ పంపించేసిన Books (Sent Books - Dispatched)
+        <span class="badge done" style="font-size:12px; padding:2px 8px;">${sentReqs.length} Sent</span>
+      </h3>
+      ${sentHtml}
+    </div>
+  `;
+}
+
+function dashboardUnits(){
+  if (session.role === "distributor") {
+    let sentCount = 0;
+    districts.forEach(d => {
+      let latest = db.distributorStatus.find(x => x.district === d);
+      if (latest && latest.sent) sentCount++;
+    });
+    return {totalUnits: districts.length, sentUnits: sentCount, pending: districts.length - sentCount};
+  }
+  if (session.role === "final") {
+    const activeDistricts = districts.filter(d => d !== "VGS books" && d !== "APMF amount");
+    let sentCount = 0;
+    activeDistricts.forEach(d => {
+      const latest = db.distributorStatus.find(x => x.district === d);
+      if (latest && latest.sent) sentCount++;
+    });
+    return {totalUnits: activeDistricts.length, sentUnits: sentCount, pending: activeDistricts.length - sentCount};
+  }
+  const scopeDistrict=session.district||"";
+  let centres=db.receptionCentres.filter(x=>x.district===scopeDistrict);
+  let entries=db.entries.filter(x=>x.district===scopeDistrict);
+  let names=new Set();
+  centres.forEach(x=>{if(x.centreName)names.add(x.district+"|"+x.centreName)});
+  entries.forEach(x=>{if(x.point)names.add(x.district+"|"+x.point)});
+  let totalUnits=names.size;
+  if(!totalUnits) totalUnits=entries.length;
+  let sentUnits=entries.filter(x=>x.completed==="Yes").length;
+  const latestForDistrict = db.distributorStatus.find(x => x.district === scopeDistrict);
+  if (latestForDistrict && latestForDistrict.sent) {
+    sentUnits = Math.max(sentUnits, totalUnits);
+  }
+  sentUnits=Math.min(sentUnits,totalUnits||sentUnits);
+  return {totalUnits,sentUnits,pending:Math.max(0,totalUnits-sentUnits)};
+}
+
 function renderCredentialTables(){
   const q=(document.getElementById("credentialSearch")?.value||"").trim().toLowerCase();
   const isFinal=session.role==="final",isDistrict=session.role==="district",isDistributor=session.role==="distributor";
@@ -1585,13 +1792,15 @@ function renderCredentialTables(){
   specialCredentialTable.innerHTML=`<div style="overflow:auto"><table><thead><tr><th>District/Name</th><th>Username</th><th>Password</th><th>Role</th>${isFinal ? '<th>Action</th>' : ''}</tr></thead><tbody>${srows||'<tr><td colspan="5" class="empty">No special accounts.</td></tr>'}</tbody></table></div>`;
 
   // 3. Distributor Accounts
-  const prows=db.distributorCredentials.map(x=>{
+  const prows=db.distributorCredentials.filter(x=>!q||x.username.toLowerCase().includes(q)).map(x=>{
     let actualPass = getPasswordForUser(x.username, x.password);
+    const pass=isFinal||isDistributor?actualPass:"xxxxx";
     const editBtn = isFinal ? `<button class="btn secondary" onclick="editLogin('${esc(x.username)}', 'distributor')" style="padding: 2px 6px; font-size: 11px; margin-right: 5px;">Edit</button>` : '';
     const delBtn = isFinal ? `<button class="btn danger" onclick="deleteLogin('${esc(x.username)}')" style="padding: 2px 6px; font-size: 11px;">Delete</button>` : '';
-    return `<tr><td><code>${textGD(x.username)}</code></td><td><code>${isFinal||isDistributor?textGD(actualPass):"xxxxx"}</code></td><td><span class="badge done">Distributor</span></td><td>Book-sent confirmation only</td>${isFinal ? `<td>${editBtn}${delBtn}</td>` : ''}</tr>`;
+    return `<tr><td><code>${textGD(x.username)}</code></td><td><code>${textGD(pass)}</code></td><td><span class="badge done">Distributor</span></td><td>Book-sent confirmation only</td>${isFinal ? `<td>${editBtn}${delBtn}</td>` : ''}</tr>`;
   }).join("");
   distributorCredentialTable.innerHTML=`<div style="overflow:auto"><table><thead><tr><th>Username</th><th>Password</th><th>Role</th><th>Access</th>${isFinal ? '<th>Action</th>' : ''}</tr></thead><tbody>${prows||'<tr><td colspan="5" class="empty">No distributor accounts.</td></tr>'}</tbody></table></div>`;
+
   const n=document.getElementById("adminCredentialNotice"); if(n)n.innerHTML=isFinal?"🔓 <b>Final Admin:</b> all District Admin, Special Admin and Distributor credentials are visible. The Final Admin password is never displayed here.":isDistrict?"🔐 <b>District Admin:</b> all usernames are visible; only your district password is clear, others are xxxxx.":isDistributor?"🔐 <b>Distributor:</b> all usernames are visible; only your Distributor password is clear, others are xxxxx.":"🔐 Passwords are protected.";
 }
 
@@ -1599,7 +1808,7 @@ function renderCredentialTables(){
 function scopedRowsGD(rows){
   rows=rows||[];
   const isSpecialAdmin = session.username === "vgs_books" || session.username === "apmf_amount";
-  if (isSpecialAdmin) return rows;
+  if (isSpecialAdmin) return rows.filter(x => x.by === session.username);
   return session.role==="district" ? rows.filter(x=>x.district===session.district) : rows;
 }
 function textGD(v){return esc(v==null?"":String(v));}
@@ -1639,7 +1848,7 @@ function renderAll(){
  const paymentsReceived = document.getElementById("paymentsReceivedContainer");
  if(paymentsReceived) paymentsReceived.classList.toggle("hidden", !isSpecialAdmin && !isFinal);
  const receiptUploads = document.getElementById("receiptUploadsContainer");
- if(receiptUploads) receiptUploads.classList.toggle("hidden", isSpecialAdmin);
+ if(receiptUploads) receiptUploads.classList.remove("hidden");
 
  let e=visibleEntries(),p=visiblePayments();
  const booksEl = document.getElementById("books");
@@ -1653,16 +1862,9 @@ function renderAll(){
  let opts=session.role==="district"?[session.district]:districts;
  const filterDistrictEl = document.getElementById("filterDistrict");
  if(filterDistrictEl) filterDistrictEl.innerHTML='<option value="">All Districts</option>'+opts.map(d=>`<option>${esc(d)}</option>`).join("");
- renderDashboardWidgets();renderDistributorStatus();renderSummary();renderEntries();renderPayments();renderReceipts();renderReport();renderAdmins();renderCredentialTables();renderAudit();renderReceptionCentres();renderBookRequirements()
+ renderDashboardWidgets();renderSummary();renderEntries();renderPayments();renderReceipts();renderReport();renderAdmins();renderCredentialTables();renderAudit();renderReceptionCentres();renderBookRequirements()
 }
-function renderDistributorStatus(){
- let panel=document.getElementById("distributorStatusPanel"),box=document.getElementById("distributorStatus");
- if(!panel || !box) return;
- if(session.role!=="distributor"){panel.classList.add("hidden");return}
- panel.classList.remove("hidden");
- let latest=db.distributorStatus.find(x=>x.by===session.username&&x.district===session.district);
- box.innerHTML=latest?`<div class="distributor-status"><b>District:</b> ${esc(latest.district)}<br><b>Status:</b> ${latest.sent?"✔ Books Sent":"⏳ Books Not Yet Sent"}<br><b>Updated:</b> ${esc(latest.time)}</div>`:`<div class="distributor-status">No dispatch status recorded yet.</div>`;
-}
+
 function renderSummary(){
   let q = "";
   const searchTop = document.getElementById("summarySearchTop");
@@ -1688,10 +1890,20 @@ function renderSummary(){
       totalInd = e.reduce((a, x) => a + money(x.total), 0);
     }
 
-    let distRows=e.filter(x=>x.completed==="Yes");
-    let emDist=distRows.reduce((a,x)=>a+money(x.em),0);
-    let tmDist=distRows.reduce((a,x)=>a+money(x.tm),0);
-    let totalDist=distRows.reduce((a,x)=>a+money(x.total),0);
+    const latestForDistrict = db.distributorStatus.find(x => x.district === d);
+    const isSentByDistributor = latestForDistrict && latestForDistrict.sent;
+
+    let emDist = 0, tmDist = 0, totalDist = 0;
+    if (isSentByDistributor) {
+      emDist = emInd;
+      tmDist = tmInd;
+      totalDist = totalInd;
+    } else {
+      let distRows = e.filter(x => x.completed === "Yes");
+      emDist = distRows.reduce((a, x) => a + money(x.em), 0);
+      tmDist = distRows.reduce((a, x) => a + money(x.tm), 0);
+      totalDist = distRows.reduce((a, x) => a + money(x.total), 0);
+    }
 
     let a = p.reduce((sum, x) => sum + money(x.amount), 0)
            + r.reduce((sum, x) => sum + money(x.amount), 0);
@@ -1704,9 +1916,9 @@ function renderSummary(){
       <td style="text-align:right;">${emInd.toLocaleString("en-IN")}</td>
       <td style="text-align:right;">${tmInd.toLocaleString("en-IN")}</td>
       <td style="text-align:right;"><b>${totalInd.toLocaleString("en-IN")}</b></td>
-      <td style="text-align:right;">${emDist.toLocaleString("en-IN")}</td>
-      <td style="text-align:right;">${tmDist.toLocaleString("en-IN")}</td>
-      <td style="text-align:right;"><b>${totalDist.toLocaleString("en-IN")}</b></td>
+      <td style="text-align:right; background:#fafefb;">${emDist.toLocaleString("en-IN")}</td>
+      <td style="text-align:right; background:#fafefb;">${tmDist.toLocaleString("en-IN")}</td>
+      <td style="text-align:right; background:#fafefb;"><b>${totalDist.toLocaleString("en-IN")}</b></td>
       <td>${a?"₹"+a.toLocaleString("en-IN"):"₹0"}</td>
       <td><b>${balance < 0 ? "-" : ""}₹${Math.abs(balance).toLocaleString("en-IN")}</b></td>
       <td>${r.length||"0"}</td>
@@ -1780,7 +1992,9 @@ function newReceptionCentre(id=null){
  <div class="formgrid">
  <label>District<select id="cDistrict" ${session.role==="district"?"disabled":""}>
  ${districts.filter(d => d !== "VGS books" && d !== "APMF amount").map(d=>`<option ${d===x.district?"selected":""}>${esc(d)}</option>`).join("")}</select></label>
- <label>Reception Centre Name<input id="cName" value="${esc(x.centreName)}" placeholder="Enter centre name"></label>
+ <label>Reception Centre Name<input id="cName" value="${esc(x.centreName)}" placeholder="Enter centre name">
+  <small style="color:#d97706; display:block; margin-top:3px; font-weight:bold;">* Enter Valid RTC Cargo points only</small>
+  </label>
  <label class="full">Complete Address<textarea id="cAddress" placeholder="Enter full postal address">${esc(x.address)}</textarea></label>
  <label>Centre In-charge<input id="cIncharge" value="${esc(x.incharge)}" placeholder="Name of in-charge"></label>
  <label>Mobile Number<input id="cMobile" value="${esc(x.mobile)}" placeholder="10-digit mobile number"></label>
@@ -1810,11 +2024,11 @@ function renderBookRequirements(){
   if(session.role==="district"){filter.value=session.district;filter.disabled=true}else{filter.disabled=false}
   const d=filter.value,q=(document.getElementById("requirementSearch")?.value||"").toLowerCase();
   const rows=scopedRowsGD(db.bookRequirements||db.requirements||[]).filter(x=>
-    (!d||x.district===d)&&(!q||[x.district,x.centreName,x.className,x.incharge,x.remarks].join(" ").toLowerCase().includes(q))
+    (!d||x.district===d)&&(!q||[x.district,x.centreName,x.incharge,x.remarks].join(" ").toLowerCase().includes(q))
   );
   box.innerHTML=rows.length?`<div style="overflow:auto"><table>
-  <thead><tr><th>S.No.</th><th>District</th><th>Reception Centre</th><th>Book / Class</th><th>Requirement</th><th>Date</th></tr></thead>
-  <tbody>${rows.map((x,i)=>`<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</td><td>${textGD(x.bookName||x.className||x.book||x.title||"—")}</td><td><b>${textGD(x.quantity||x.qty||x.requirement||x.total||0)}</b></td><td>${textGD(x.date||x.createdAt||"—")}</td></tr>`).join("")}</tbody></table></div>`:
+  <thead><tr><th>S.No.</th><th>District</th><th>Reception Centre</th><th>EM Books</th><th>TM Books</th><th>Total Books</th><th>Date</th></tr></thead>
+  <tbody>${rows.map((x,i)=>`<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</td><td>${x.em || 0}</td><td>${x.tm || 0}</td><td><b>${x.total || 0}</b></td><td>${textGD(x.date||x.createdAt||"—")}</td></tr>`).join("")}</tbody></table></div>`:
   `<div class="empty" style="padding:28px"><div class="big">📚</div><b>No book requirements entered yet.</b></div>`;
 }
 
@@ -1850,29 +2064,28 @@ function newBookRequirement(id=null){
  if(!session.role){alert("Please login first.");return}
  let x=id?db.bookRequirements.find(y=>y.id===id):{
    district:session.role==="district"?session.district:districts[0],
-   centreName:"",className:"10th Class",incharge:"",em:"",tm:"",total:"",remarks:""
+   centreName:"",className:"",incharge:"",em:"",tm:"",total:"",remarks:""
  };
  if(id&&!canEdit()){alert("Only Final Admin can edit existing book requirement records.");return}
  let availableCentres=db.receptionCentres.filter(c=>session.role!=="district"||c.district===session.district);
  modalbox.innerHTML=`<h2>📚 ${id?"Edit":"Add"} Books Requirement</h2>
- <div class="formgrid">
- <label>District<select id="bDistrict" ${session.role==="district"?"disabled":""} onchange="updateBookRequirementCentres()">
- ${districts.filter(d => d !== "VGS books" && d !== "APMF amount").map(d=>`<option ${d===x.district?"selected":""}>${esc(d)}</option>`).join("")}</select></label>
- <label>Reception Centre
- <select id="bCentre" onchange="updateInchargeFromCentre()"><option value="">-- Select Centre --</option>
- ${availableCentres.filter(c=>c.district===x.district).map(c=>`<option ${c.centreName===x.centreName?"selected":""}>${esc(c.centreName)}</option>`).join("")}
- </select></label>
- <label>Class<input id="bClass" value="${esc(x.className)}" placeholder="10th Class"></label>
- <label>In-charge<input id="bIncharge" value="${esc(x.incharge)}"></label>
- <label>English Medium (EM)<input id="bEM" type="number" min="0" value="${esc(x.em)}" oninput="calcRequirementTotal()"></label>
- <label>Telugu Medium (TM)<input id="bTM" type="number" min="0" value="${esc(x.tm)}" oninput="calcRequirementTotal()"></label>
- <label>Total Books<input id="bTotal" type="text" readonly value="${money(x.em)+money(x.tm)}" style="background:#f1f5f9; font-weight:bold; cursor:not-allowed;"></label>
- <label>Total Amount (₹)<input id="bTotalAmount" type="text" readonly value="₹${((money(x.em)+money(x.tm))*(db.bookPrice || 60)).toLocaleString('en-IN')}" style="background:#f1f5f9; font-weight:bold; cursor:not-allowed;"></label>
- <label class="full">Remarks<textarea id="bRemarks">${esc(x.remarks)}</textarea></label>
- </div>
- <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button>
- <button class="btn primary" onclick="saveBookRequirement('${id||""}')">Save Books Requirement</button></div>`;
- modal.classList.add("show");
+  <div class="formgrid">
+  <label>District<select id="bDistrict" ${session.role==="district"?"disabled":""} onchange="updateBookRequirementCentres()">
+  ${districts.filter(d => d !== "VGS books" && d !== "APMF amount").map(d=>`<option ${d===x.district?"selected":""}>${esc(d)}</option>`).join("")}</select></label>
+  <label>Reception Centre
+  <select id="bCentre" onchange="updateInchargeFromCentre()"><option value="">-- Select Centre --</option>
+  ${availableCentres.filter(c=>c.district===x.district).map(c=>`<option ${c.centreName===x.centreName?"selected":""}>${esc(c.centreName)}</option>`).join("")}
+  </select></label>
+  <label>In-charge<input id="bIncharge" value="${esc(x.incharge)}"></label>
+  <label>English Medium (EM)<input id="bEM" type="number" min="0" value="${esc(x.em)}" oninput="calcRequirementTotal()"></label>
+  <label>Telugu Medium (TM)<input id="bTM" type="number" min="0" value="${esc(x.tm)}" oninput="calcRequirementTotal()"></label>
+  <label>Total Books<input id="bTotal" type="text" readonly value="${money(x.em)+money(x.tm)}" style="background:#f1f5f9; font-weight:bold; cursor:not-allowed;"></label>
+  <label>Total Amount (₹)<input id="bTotalAmount" type="text" readonly value="₹${((money(x.em)+money(x.tm))*(db.bookPrice || 60)).toLocaleString('en-IN')}" style="background:#f1f5f9; font-weight:bold; cursor:not-allowed;"></label>
+  <label class="full">Remarks<textarea id="bRemarks">${esc(x.remarks)}</textarea></label>
+  </div>
+  <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button>
+  <button class="btn primary" onclick="saveBookRequirement('${id||""}')">Save Books Requirement</button></div>`;
+  modal.classList.add("show");
 }
 
 function calcRequirementTotal(){
@@ -1893,8 +2106,11 @@ function saveBookRequirement(id){
   if(!canAdd(d)){alert("You can enter data only for your assigned district.");return}
   let emVal = Number(bEM.value || 0);
   let tmVal = Number(bTM.value || 0);
-  let x={id:id||generateUUID(),district:d,centreName:bCentre.value,className:bClass.value.trim(),
-         incharge:bIncharge.value.trim(),em:emVal,tm:tmVal,total:emVal+tmVal,remarks:bRemarks.value.trim()};
+  let original = id ? db.bookRequirements.find(y=>y.id===id) : null;
+  let createdAt = original ? (original.createdAt || original.date || new Date().toLocaleString()) : new Date().toLocaleString();
+  let x={id:id||generateUUID(),district:d,centreName:bCentre.value,className:"",
+         incharge:bIncharge.value.trim(),em:emVal,tm:tmVal,total:emVal+tmVal,remarks:bRemarks.value.trim(),
+         createdAt: createdAt, status: original ? (original.status || "Pending") : "Pending"};
   if(!x.centreName){alert("Please select a reception centre.");return}
   if(!x.em&&!x.tm){alert("Please enter the book requirement.");return}
   if(id)db.bookRequirements[db.bookRequirements.findIndex(y=>y.id===id)]=x;
@@ -1904,22 +2120,7 @@ function saveBookRequirement(id){
 }
 
 function renderEntries(){
-  const card = document.getElementById("distributionEntriesCard");
-  if (card) {
-    card.classList.toggle("hidden", session.role === "district");
-  }
-  let d=filterDistrict.value,q=entrySearch.value.toLowerCase();
-  let rows=visibleEntries().filter(x=>(!d||x.district===d)&&(!q||[x.point,x.incharge,x.mobile].join(" ").toLowerCase().includes(q)));
-  if(!rows.length){entries.innerHTML='<div class="empty"><div class="big">📚</div>No distribution entries yet.</div>';return}
-  entries.innerHTML=`<table><thead><tr><th>District</th><th>Reception Point</th><th>In-charge</th><th>Mobile</th><th>EM</th><th>TM</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows.map(x=>{
-    let actionHtml = "View only";
-    if (session.role === "final") {
-      actionHtml = `<button class="btn secondary" onclick="newEntry('${x.id}')" style="margin-right:5px">Edit</button><button class="btn danger" onclick="deleteEntry('${x.id}')">Delete</button>`;
-    } else if (session.role === "distributor") {
-      actionHtml = `<button class="btn secondary" onclick="newEntry('${x.id}')">Edit</button>`;
-    }
-    return `<tr><td>${esc(x.district)}</td><td>${esc(x.point)}</td><td>${esc(x.incharge)}</td><td>${esc(x.mobile)}</td><td>${esc(x.em)}</td><td>${esc(x.tm)}</td><td>${esc(x.total)}</td><td>${x.completed==="Yes"?'<span class="badge done">Completed</span>':'<span class="badge pending">Pending</span>'}</td><td>${actionHtml}</td></tr>`;
-  }).join("")}</tbody></table>`
+  return;
 }
 function calcEntryTotal(){
  const emEl = document.getElementById("fEM");
@@ -1974,26 +2175,38 @@ function savePayment(){
  if(!canAdd(d)){alert("Invalid district.");return}
  let x={id:generateUUID(),district:d,date:pDate.value,amount:pAmount.value,utr:pUtr.value,by:session.username};db.payments.push(x);audit("Recorded payment for "+d);save("payment", x);closeModal();renderAll();toast("Payment recorded")
 }
+
 function newReceipt(){
  if(!session.role){alert("Please login first.");return}
  let d=session.role==="district"?session.district:districts[0];
+ let availableCentres=db.receptionCentres.filter(c=>c.district===d);
  modalbox.innerHTML=`<h2>🧾 Upload Payment Receipt</h2>
- <div class="info">District Admins can upload receipts for <b>${esc(d)}</b>. The receipt is linked to the district and stored in this browser prototype. Production version can connect to secure cloud storage.</div>
- <div class="formgrid">
- <label>District<select id="rDistrict" ${session.role==="district"?"disabled":""}>${districts.filter(x => x !== "VGS books" && x !== "APMF amount").map(x=>`<option ${x===d?"selected":""}>${esc(x)}</option>`).join("")}</select></label>
- <label>Receipt Date<input id="rDate" type="date" value="${new Date().toISOString().slice(0,10)}"></label>
- <label>Amount on Receipt (₹)<input id="rAmount" type="number" min="0" step="0.01"></label>
- <label>UTR / Transaction ID<input id="rUtr"></label>
- <label>Receipt File (Image / PDF)<input id="rFile" type="file" accept="image/*,.pdf" required></label>
- <label>Remarks<input id="rRemarks"></label>
- </div>
- <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveReceipt()">Upload Receipt</button></div>`;
- modal.classList.add("show")
+   <div class="info">District Admins can upload receipts for <b>${esc(d)}</b>. The receipt is linked to the district and stored in this browser prototype. Production version can connect to secure cloud storage.</div>
+   <div class="formgrid">
+   <label>District<select id="rDistrict" ${session.role==="district"?"disabled":""} onchange="updateReceiptCentres()">${districts.filter(x => x !== "VGS books" && x !== "APMF amount").map(x=>`<option ${x===d?"selected":""}>${esc(x)}</option>`).join("")}</select></label>
+   <label>Reception Centre<select id="rCentre"><option value="">-- Select Centre --</option>${availableCentres.map(c=>`<option>${esc(c.centreName)}</option>`).join("")}</select></label>
+   <label>Payment To<select id="rPaymentTo"><option value="vgs_books">VGS books</option><option value="apmf_amount">APMF amount</option></select></label>
+   <label>Receipt Date<input id="rDate" type="date" value="${new Date().toISOString().slice(0,10)}"></label>
+   <label>Amount on Receipt (₹)<input id="rAmount" type="number" min="0" step="0.01"></label>
+   <label>UTR / Transaction ID<input id="rUtr"></label>
+   <label>Receipt File (Image / PDF) (Optional)<input id="rFile" type="file" accept="image/*,.pdf"></label>
+   <label class="full">Remarks<input id="rRemarks"></label>
+   </div>
+   <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveReceipt()">Upload Receipt</button></div>`;
+   modal.classList.add("show")
+}
+function updateReceiptCentres() {
+  const d = document.getElementById("rDistrict").value;
+  const centres = db.receptionCentres.filter(c => c.district === d);
+  const select = document.getElementById("rCentre");
+  if (select) {
+    select.innerHTML = '<option value="">-- Select Centre --</option>' + 
+      centres.map(c => `<option>${esc(c.centreName)}</option>`).join("");
+  }
 }
 async function saveReceipt(){
   let d=session.role==="district"?session.district:rDistrict.value;
   let file=rFile.files[0];
-  if(!file){alert("Please select a receipt file.");return}
   if(!canAdd(d)){alert("You can upload receipts only for your assigned district.");return}
 
   // Visual feedback: show loading state
@@ -2002,60 +2215,111 @@ async function saveReceipt(){
   if (btn) {
     originalText = btn.textContent;
     btn.disabled = true;
-    btn.textContent = "Uploading to S3...";
+    btn.textContent = "Uploading...";
   }
 
   let fileUrl = "";
-  if (AWS_API_URL) {
-    try {
-      // 1. Get S3 Presigned URL from API Gateway Lambda
-      const presignRes = await fetch(AWS_API_URL + "/presign-receipt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, fileType: file.type, district: d })
-      });
-      if (!presignRes.ok) throw new Error("Failed to get presigned upload URL from AWS.");
-      const data = await presignRes.json();
-      const uploadUrl = data.uploadUrl;
-      fileUrl = data.fileUrl;
+  let receiptName = "—";
+  let fileType = "";
+  let fileSize = 0;
 
-      // 2. Upload file directly to S3 via PUT request
-      const uploadRes = await fetch(uploadUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type },
-        body: file
-      });
-      if (!uploadRes.ok) throw new Error("Failed to upload file to Amazon S3.");
-    } catch (err) {
-      alert("AWS Upload Error: " + err.message);
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = originalText;
+  if (file) {
+    if (AWS_API_URL) {
+      try {
+        // 1. Get S3 Presigned URL from API Gateway Lambda
+        const presignRes = await fetch(AWS_API_URL + "/presign-receipt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fileName: file.name, fileType: file.type, district: d })
+        });
+        if (!presignRes.ok) throw new Error("Failed to get presigned upload URL from AWS.");
+        const data = await presignRes.json();
+        const uploadUrl = data.uploadUrl;
+        fileUrl = data.fileUrl;
+
+        // 2. Upload file directly to S3 via PUT request
+        const uploadRes = await fetch(uploadUrl, {
+          method: "PUT",
+          headers: { "Content-Type": file.type },
+          body: file
+        });
+        if (!uploadRes.ok) throw new Error("Failed to upload file to Amazon S3.");
+      } catch (err) {
+        alert("AWS Upload Error: " + err.message);
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+        return;
       }
-      return;
+    } else {
+      // Offline mode: convert file to Base64 data URL
+      if (file.size > 1.5 * 1024 * 1024) {
+        alert("Offline mode: File is too large. Please upload an image smaller than 1.5MB to save in browser storage.");
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+        return;
+      }
+      fileUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
     }
+    receiptName = file.name;
+    fileType = file.type;
+    fileSize = file.size;
   }
 
   let x = {
     id: generateUUID(),
     district: d,
+    centreName: document.getElementById("rCentre")?.value || "",
+    paymentTo: document.getElementById("rPaymentTo")?.value || "vgs_books",
     date: rDate.value,
     amount: rAmount.value,
     utr: rUtr.value,
-    receiptName: file.name,
-    fileType: file.type,
-    size: file.size,
+    receiptName: receiptName,
+    fileType: fileType,
+    size: fileSize,
     remarks: rRemarks.value,
     by: session.username,
     fileUrl: fileUrl,
     time: new Date().toLocaleString()
   };
   db.receipts.push(x);
-  audit("Uploaded receipt " + file.name + " for " + d);
+  audit("Uploaded receipt " + receiptName + " for " + d);
   save("receipt", x);
   closeModal();
   renderAll();
   toast("Receipt recorded successfully");
+}
+
+function viewReceiptFile(id) {
+  const r = db.receipts.find(x => x.id === id);
+  if (!r || !r.fileUrl) return;
+  
+  const modalboxEl = document.getElementById("modalbox");
+  const modalEl = document.getElementById("modal");
+  if (!modalboxEl || !modalEl) return;
+  
+  modalboxEl.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #e2e8f0; padding-bottom:10px;">
+      <h2 style="font-size:18px; color:var(--navy); margin:0;">🧾 View Receipt: ${esc(r.receiptName)}</h2>
+      <button class="btn secondary" onclick="closeModal()" style="padding:6px 12px; font-size:13px;">Close</button>
+    </div>
+    <div style="text-align:center; max-height:70vh; overflow:auto; padding:10px; background:#f8fafc; border-radius:8px;">
+      ${r.fileType && r.fileType.startsWith("image/") 
+        ? `<img src="${r.fileUrl}" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);" />`
+        : r.fileType === "application/pdf"
+          ? `<iframe src="${r.fileUrl}" style="width:100%; height:60vh; border:none; border-radius:8px;"></iframe>`
+          : `<a href="${r.fileUrl}" target="_blank" class="btn primary" style="display:inline-block; margin-top:20px; font-weight:800;">Download / View File 🔗</a>`
+      }
+    </div>
+  `;
+  modalEl.classList.add("show");
 }
 function renderPayments(){
  let rows=visiblePayments();
@@ -2065,7 +2329,7 @@ function renderPayments(){
  const actionArea = document.getElementById("recordPaymentActionArea");
  if (actionArea) {
    if (session.username === "vgs_books" || session.username === "apmf_amount") {
-     actionArea.innerHTML = `<button class="btn secondary" onclick="newPayment()">＋ Record Payment</button>`;
+     actionArea.innerHTML = `<button class="btn printbtn" onclick="printPaymentsTable()">Print Payments</button>`;
    } else {
      actionArea.innerHTML = "";
    }
@@ -2076,15 +2340,40 @@ function renderPayments(){
 }
 function renderReceipts(){
   const box=document.getElementById("receiptsTable"); if(!box)return;
-  const rows=scopedRowsGD(db.receipts||[]);
+  const rows=visibleReceipts();
+  
+  // Hide "Upload Receipt" button for VGS/APMF admins
+  const uploadBtn = document.querySelector("#receiptUploadsContainer .btn.secondary");
+  const isSpecialAdmin = session.username === "vgs_books" || session.username === "apmf_amount";
+  if (uploadBtn) {
+    uploadBtn.style.display = isSpecialAdmin ? "none" : "";
+  }
+
   box.innerHTML=rows.length?`<div style="overflow:auto"><table>
-  <thead><tr><th>S.No.</th><th>District</th><th>Reception Centre</th><th>Receipt / File</th><th>Amount</th><th>Uploaded By</th><th>Date & Time</th><th>Status</th><th>Action</th></tr></thead>
+  <thead><tr><th>S.No.</th><th>District</th><th>Reception Centre</th><th>Payment To</th><th>Receipt / File</th><th>UTR</th><th>Amount</th><th>Uploaded By</th><th>Date & Time</th><th>Status</th><th>Action</th></tr></thead>
   <tbody>${rows.map((x,i)=>{
-    let nameHtml = `<b>${textGD(x.receiptName || "Receipt")}</b>`;
+    let nameHtml = `<b>${textGD(x.receiptName || "—")}</b>`;
     if (x.fileUrl) {
-      nameHtml = `<a href="${x.fileUrl}" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: bold;" title="Click to view file in Amazon S3">${esc(x.receiptName)} 🔗</a>`;
+      nameHtml = `<a href="javascript:void(0)" onclick="viewReceiptFile('${x.id}')" style="color: #2563eb; text-decoration: underline; font-weight: bold;" title="Click to view receipt">${esc(x.receiptName)} 🔗</a>`;
     }
-    return `<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</td><td>${nameHtml}</td><td><b>${x.amount?"₹"+money(x.amount).toLocaleString("en-IN"):"₹0"}</b></td><td>${textGD(x.by||x.username||x.uploadedBy||"—")}</td><td>${textGD(x.time||x.date||x.createdAt||"—")}</td><td><span class="badge done">Uploaded</span></td><td>${canEdit()?`<button class="btn danger" onclick="deleteReceipt('${x.id}')">Delete</button>`:"View only"}</td></tr>`
+    let pTo = x.paymentTo === "apmf_amount" ? "APMF amount" : (x.paymentTo === "vgs_books" ? "VGS books" : "—");
+    let statusText = x.status || "Uploaded";
+    let statusClass = statusText === "Confirmed" ? "done" : "pending";
+    let actionHtml = "View only";
+    if (canEdit()) {
+      if (statusText === "Confirmed") {
+        actionHtml = `<button class="btn secondary" onclick="revertReceipt('${x.id}')" style="padding:4px 8px; font-size:11px; margin-right:5px;">Revert</button><button class="btn danger" onclick="deleteReceipt('${x.id}')">Delete</button>`;
+      } else {
+        actionHtml = `<button class="btn danger" onclick="deleteReceipt('${x.id}')">Delete</button>`;
+      }
+    } else if (isSpecialAdmin) {
+      if (statusText === "Confirmed") {
+        actionHtml = `<span style="color: var(--green); font-weight: bold;">✓ Confirmed</span>`;
+      } else {
+        actionHtml = `<button class="btn primary" onclick="confirmReceipt('${x.id}')" style="padding:4px 8px; font-size:11px;">Confirm</button>`;
+      }
+    }
+    return `<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</td><td><span class="badge" style="background:#eff6ff; color:#1d4ed8; font-weight:bold;">${esc(pTo)}</span></td><td>${nameHtml}</td><td>${esc(x.utr || "—")}</td><td><b>${x.amount?"₹"+money(x.amount).toLocaleString("en-IN"):"₹0"}</b></td><td>${textGD(x.by||x.username||x.uploadedBy||"—")}</td><td>${textGD(x.time||x.date||x.createdAt||"—")}</td><td><span class="badge ${statusClass}">${esc(statusText)}</span></td><td>${actionHtml}</td></tr>`
   }).join("")}</tbody></table></div>`:
   `<div class="empty" style="padding:30px"><div class="big">✉</div><b>No receipts uploaded yet.</b></div>`;
 }
@@ -2109,6 +2398,135 @@ function renderAudit(){
 function deleteEntry(id){if(!canEdit()){alert("Only Final Admin can delete.");return}if(confirm("Delete distribution entry?")){db.entries=db.entries.filter(x=>x.id!==id);audit("Deleted distribution entry");save();cloudDelete("entry",id);renderAll()}}
 function deletePayment(id){if(!canEdit()){alert("Only Final Admin can delete.");return}if(confirm("Delete payment?")){db.payments=db.payments.filter(x=>x.id!==id);audit("Deleted payment");save();cloudDelete("payment",id);renderAll()}}
 function deleteReceipt(id){if(!canEdit()){alert("Only Final Admin can delete.");return}if(confirm("Delete receipt record?")){db.receipts=db.receipts.filter(x=>x.id!==id);audit("Deleted receipt");save();cloudDelete("receipt",id);renderAll()}}
+
+function confirmReceipt(id) {
+  let r = db.receipts.find(x => x.id === id);
+  if (!r) return;
+  if (confirm("Confirm payment receipt of ₹" + money(r.amount).toLocaleString("en-IN") + " from " + r.district + "?")) {
+    r.status = "Confirmed";
+    let p = {
+      id: generateUUID(),
+      receiptId: r.id,
+      district: r.district,
+      date: new Date().toISOString().slice(0,10),
+      amount: r.amount,
+      utr: r.utr || "—",
+      by: session.username
+    };
+    db.payments.push(p);
+    audit("Confirmed receipt and recorded payment for " + r.district);
+    save();
+    if (AWS_API_URL) {
+      save("receipt", r);
+      save("payment", p);
+    }
+    renderAll();
+    toast("Receipt confirmed and payment recorded");
+  }
+}
+
+function revertReceipt(id) {
+  if (!canEdit()) {
+    alert("Only Final Admin can revert confirmation.");
+    return;
+  }
+  let r = db.receipts.find(x => x.id === id);
+  if (!r) return;
+  
+  if (confirm("Revert confirmation for this receipt from " + r.district + "?\nThis will delete the corresponding payment record and change the receipt status back to Uploaded.")) {
+    r.status = "Uploaded";
+    
+    // Find and delete corresponding payment
+    let pIndex = db.payments.findIndex(p => 
+      p.receiptId === r.id || 
+      (p.district === r.district && money(p.amount) === money(r.amount) && (p.utr === r.utr || p.utr === "—") && (p.by === "vgs_books" || p.by === "apmf_amount"))
+    );
+    
+    if (pIndex !== -1) {
+      let pId = db.payments[pIndex].id;
+      db.payments.splice(pIndex, 1);
+      if (AWS_API_URL) {
+        cloudDelete("payment", pId);
+      }
+    }
+    
+    audit("Reverted confirmation for receipt " + r.id + " (" + r.district + ")");
+    save();
+    if (AWS_API_URL) {
+      save("receipt", r);
+    }
+    renderAll();
+    toast("Receipt confirmation reverted successfully");
+  }
+}
+
+function printPaymentsTable() {
+  const rows = visiblePayments();
+
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#b42318; margin-top: 0; margin-bottom: 20px;">Ganitha Deepthi 2026–27 | Payments Received Details</h3>`;
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Date</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:25%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:15%;">Amount</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:25%;">UTR / Transaction ID</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Entered By</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  let totalAmount = 0;
+
+  rows.forEach((x, i) => {
+    let amt = money(x.amount);
+    totalAmount += amt;
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.date)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.district)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${amt.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.utr || "—")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.by || "—")}</td>
+      </tr>
+    `;
+  });
+
+  if (rows.length) {
+    content += `
+      <tr style="background:#f1f5f9; font-weight:bold;">
+        <td colspan="3" style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Total</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${totalAmount.toLocaleString("en-IN")}</td>
+        <td colspan="2" style="border:1px solid #cbd5e1; padding:6px;"></td>
+      </tr>
+    `;
+  } else {
+    content += `<tr><td colspan="6" style="text-align:center; padding:20px; color:#64748b;">No payment records yet.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printPaymentsContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printPayments").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Payments_Received_List";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printPayments").classList.remove("print-active");
+  }, 600);
+}
+
 function resetData(){
   if(!canEdit()){alert("Only Final Admin can reset data.");return}
   if(confirm("Delete ALL 2026–27 entries, payments, receipts and audit records?")){
@@ -2141,97 +2559,355 @@ function sanitizeForDynamo(obj) {
   return clean;
 }
 
-async function syncAllToCloud() {
-  if (!AWS_API_URL) { alert("No cloud API configured. Cannot sync."); return; }
-  if (!confirm("This will upload ALL local data to the cloud database.\n\nRun this from the device where all data was originally entered.\n\nProceed?")) return;
 
-  const btn = document.getElementById("syncCloudBtn");
-  const wrap = document.getElementById("syncProgressWrap");
-  const bar = document.getElementById("syncProgressBar");
-  const label = document.getElementById("syncProgressLabel");
+function printReceiptUploads() {
+  const rows = visibleReceipts();
 
-  btn.disabled = true;
-  btn.textContent = "Syncing…";
-  wrap.style.display = "block";
-  bar.style.width = "0%";
-  bar.style.background = "#2563eb";
-  label.style.color = "#1d4ed8";
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#b42318; margin-top: 0; margin-bottom: 20px;">Ganitha Deepthi 2026–27 | Receipt Uploads &amp; Audit Details</h3>`;
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Payment To</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Receipt File Name</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:10%;">UTR</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">Amount</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:10%;">Uploaded By</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:10%;">Date &amp; Time</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
 
-  const tasks = [];
-  (db.entries || []).forEach(x => tasks.push(["entry", x]));
-  (db.payments || []).forEach(x => tasks.push(["payment", x]));
-  (db.receipts || []).forEach(x => tasks.push(["receipt", x]));
-  (db.receptionCentres || []).forEach(x => tasks.push(["centre", x]));
-  (db.bookRequirements || []).forEach(x => tasks.push(["requirement", x]));
-  (db.distributorStatus || []).forEach(x => tasks.push(["distributorStatus", x]));
-  (db.audit || []).forEach(x => tasks.push(["audit", x]));
-  (db.credentials || []).forEach(x => tasks.push(["credential", { id: x.username, ...x }]));
-  (db.distributorCredentials || []).forEach(x => tasks.push(["distributorCredential", { id: x.username, ...x }]));
+  let totalAmount = 0;
 
-  if (tasks.length === 0) {
-    toast("No local data found to sync.");
-    btn.disabled = false; btn.textContent = "☁️ Sync All to Cloud Now"; wrap.style.display = "none";
-    return;
-  }
+  rows.forEach((x, i) => {
+    let amt = money(x.amount);
+    totalAmount += amt;
+    let pTo = x.paymentTo === "apmf_amount" ? "APMF amount" : (x.paymentTo === "vgs_books" ? "VGS books" : "—");
 
-  let done = 0, failed = 0, firstError = null;
-  const total = tasks.length;
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.district)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName || "—")}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(pTo)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.receiptName || "—")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.utr || "—")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${amt.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.by || "—")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.time || x.date || "—")}</td>
+      </tr>
+    `;
+  });
 
-  // Process one by one to avoid API throttling
-  for (let i = 0; i < tasks.length; i++) {
-    let [type, rawItem] = tasks[i];
-    // Assign id if missing, then sanitize empty values for DynamoDB
-    if (!rawItem.id) rawItem = { id: generateUUID(), ...rawItem };
-    const item = sanitizeForDynamo(rawItem);
-
-    try {
-      const res = await fetch(AWS_API_URL + "/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, item })
-      });
-      if (res.ok) {
-        done++;
-      } else {
-        failed++;
-        const errText = await res.text().catch(() => "HTTP " + res.status);
-        if (!firstError) firstError = `HTTP ${res.status}: ${errText}`;
-        console.error(`Sync failed [${type}] ${item.id}:`, res.status, errText);
-      }
-    } catch (e) {
-      failed++;
-      if (!firstError) firstError = e.message || String(e);
-      console.error(`Sync error [${type}] ${item.id}:`, e);
-    }
-
-    const pct = Math.round(((i + 1) / total) * 100);
-    bar.style.width = pct + "%";
-    label.textContent = `Syncing… ${i + 1} / ${total} records (${done} ✅ ${failed} ❌)`;
-  }
-
-  bar.style.width = "100%";
-  btn.disabled = false;
-  btn.textContent = "☁️ Sync All to Cloud Now";
-
-  if (failed === 0) {
-    const msg = `✅ Sync complete! ${done} records uploaded to cloud.`;
-    label.textContent = msg;
-    label.style.color = "#166534";
-    bar.style.background = "#16a34a";
-    toast(msg);
-    audit("Synced all local data to cloud: " + done + " records");
-    setTimeout(() => { wrap.style.display = "none"; label.style.color = "#1d4ed8"; bar.style.background = "#2563eb"; }, 5000);
+  if (rows.length) {
+    content += `
+      <tr style="background:#f1f5f9; font-weight:bold;">
+        <td colspan="6" style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Total</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${totalAmount.toLocaleString("en-IN")}</td>
+        <td colspan="2" style="border:1px solid #cbd5e1; padding:6px;"></td>
+      </tr>
+    `;
   } else {
-    const msg = `⚠️ Sync done: ${done} succeeded, ${failed} failed.`;
-    label.textContent = msg;
-    label.style.color = "#b45309";
-    bar.style.background = "#f59e0b";
-    toast(msg);
-    if (firstError) {
-      alert("Sync failed. First error:\n\n" + firstError + "\n\nPlease check browser console (F12) for full details.");
-    }
+    content += `<tr><td colspan="8" style="text-align:center; padding:20px; color:#64748b;">No receipts uploaded yet.</td></tr>`;
   }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printReceiptUploadsContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printReceiptUploads").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Receipt_Uploads_List";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printReceiptUploads").classList.remove("print-active");
+  }, 600);
 }
+
+function printDistrictAccounts() {
+  let opts = session.role === "district" ? [session.district] : districts.filter(d => d !== "VGS books" && d !== "APMF amount");
+  
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#b42318; margin-top: 0; margin-bottom: 20px;">Ganitha Deepthi 2026–27 | District Accounts Summary</h3>`;
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th rowspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:center; vertical-align:middle;">S.No.</th>
+          <th rowspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:left; vertical-align:middle;">District</th>
+          <th colspan="3" style="border:1px solid #cbd5e1; padding:6px; text-align:center;">Books Indented</th>
+          <th colspan="3" style="border:1px solid #cbd5e1; padding:6px; text-align:center;">Books Distributed</th>
+          <th rowspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:right; vertical-align:middle;">Amount Received</th>
+          <th rowspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:right; vertical-align:middle;">Balance Amount</th>
+          <th rowspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:center; vertical-align:middle;">Receipts</th>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <th style="border:1px solid #cbd5e1; padding:4px; text-align:right; font-size:10px;">EM</th>
+          <th style="border:1px solid #cbd5e1; padding:4px; text-align:right; font-size:10px;">TM</th>
+          <th style="border:1px solid #cbd5e1; padding:4px; text-align:right; font-size:10px;">Total</th>
+          <th style="border:1px solid #cbd5e1; padding:4px; text-align:right; font-size:10px;">EM</th>
+          <th style="border:1px solid #cbd5e1; padding:4px; text-align:right; font-size:10px;">TM</th>
+          <th style="border:1px solid #cbd5e1; padding:4px; text-align:right; font-size:10px;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  let totalEmInd = 0, totalTmInd = 0, totalInd = 0;
+  let totalEmDist = 0, totalTmDist = 0, totalDist = 0;
+  let totalAmtRec = 0, totalBal = 0, totalRecCount = 0;
+
+  opts.forEach((d, i) => {
+    let e = db.entries.filter(x => x.district === d);
+    let p = db.payments.filter(x => x.district === d);
+    let r = db.receipts.filter(x => x.district === d);
+    
+    let reqs = (db.bookRequirements || []).filter(x => x.district === d);
+    let emInd = reqs.reduce((a, x) => a + money(x.em), 0);
+    let tmInd = reqs.reduce((a, x) => a + money(x.tm), 0);
+    let totalIndValue = reqs.reduce((a, x) => a + money(x.total), 0);
+
+    if (totalIndValue === 0) {
+      emInd = e.reduce((a, x) => a + money(x.em), 0);
+      tmInd = e.reduce((a, x) => a + money(x.tm), 0);
+      totalIndValue = e.reduce((a, x) => a + money(x.total), 0);
+    }
+
+    const latestForDistrict = db.distributorStatus.find(x => x.district === d);
+    const isSentByDistributor = latestForDistrict && latestForDistrict.sent;
+
+    let emDist = 0, tmDist = 0, totalDistValue = 0;
+    if (isSentByDistributor) {
+      emDist = emInd;
+      tmDist = tmInd;
+      totalDistValue = totalIndValue;
+    } else {
+      let distRows = e.filter(x => x.completed === "Yes");
+      emDist = distRows.reduce((a, x) => a + money(x.em), 0);
+      tmDist = distRows.reduce((a, x) => a + money(x.tm), 0);
+      totalDistValue = distRows.reduce((a, x) => a + money(x.total), 0);
+    }
+
+    let amtRec = p.reduce((sum, x) => sum + money(x.amount), 0)
+               + r.reduce((sum, x) => sum + money(x.amount), 0);
+    let totalDues = totalIndValue * (db.bookPrice || 60);
+    let balance = totalDues - amtRec;
+
+    totalEmInd += emInd;
+    totalTmInd += tmInd;
+    totalInd += totalIndValue;
+    totalEmDist += emDist;
+    totalTmDist += tmDist;
+    totalDist += totalDistValue;
+    totalAmtRec += amtRec;
+    totalBal += balance;
+    totalRecCount += r.length;
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(d)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${emInd.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tmInd.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>${totalIndValue.toLocaleString("en-IN")}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${emDist.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tmDist.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>${totalDistValue.toLocaleString("en-IN")}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${amtRec.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>${balance < 0 ? "-" : ""}₹${Math.abs(balance).toLocaleString("en-IN")}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${r.length}</td>
+      </tr>
+    `;
+  });
+
+  // Total row
+  content += `
+    <tr style="background:#f1f5f9; font-weight:bold;">
+      <td colspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Total</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalEmInd.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalTmInd.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalInd.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalEmDist.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalTmDist.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalDist.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${totalAmtRec.toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalBal < 0 ? "-" : ""}₹${Math.abs(totalBal).toLocaleString("en-IN")}</td>
+      <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${totalRecCount}</td>
+    </tr>
+  `;
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printDistrictAccountsContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printDistrictAccounts").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_District_Accounts_Summary";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printDistrictAccounts").classList.remove("print-active");
+  }, 600);
+}
+
+function printForm1ReceptionCentres() {
+  const filter = document.getElementById("centreFilterDistrict");
+  const d = filter ? filter.value : "";
+  const q = (document.getElementById("centreSearch")?.value || "").toLowerCase();
+  const rows = scopedRowsGD(db.receptionCentres).filter(x =>
+    (!d || x.district === d) && (!q || [x.district, x.centreName, x.address, x.incharge, x.mobile, x.remarks].join(" ").toLowerCase().includes(q))
+  );
+
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#b42318; margin-top: 0; margin-bottom: 20px;">Ganitha Deepthi 2026–27 | Reception Centres Details</h3>`;
+  if (d) {
+    content += `<h4 style="color:#334155; margin-bottom:10px;">Filtered by District: ${esc(d)}</h4>`;
+  }
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:30%;">Complete Address</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">In-charge</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Mobile</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rows.forEach((x, i) => {
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.district)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.address)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.incharge)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.mobile)}</td>
+      </tr>
+    `;
+  });
+
+  if (!rows.length) {
+    content += `<tr><td colspan="6" style="text-align:center; padding:20px; color:#64748b;">No matching reception centres found.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printForm1ReceptionCentresContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printForm1ReceptionCentres").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Reception_Centres_List";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printForm1ReceptionCentres").classList.remove("print-active");
+  }, 600);
+}
+
+function printForm2BookRequirements() {
+  const filter = document.getElementById("requirementFilterDistrict");
+  const d = filter ? filter.value : "";
+  const q = (document.getElementById("requirementSearch")?.value || "").toLowerCase();
+  const rows = scopedRowsGD(db.bookRequirements || []).filter(x =>
+    (!d || x.district === d) && (!q || [x.district, x.centreName, x.incharge, x.remarks].join(" ").toLowerCase().includes(q))
+  );
+
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#b42318; margin-top: 0; margin-bottom: 20px;">Ganitha Deepthi 2026–27 | Books Requirements Details</h3>`;
+  if (d) {
+    content += `<h4 style="color:#334155; margin-bottom:10px;">Filtered by District: ${esc(d)}</h4>`;
+  }
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:25%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">In-charge</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">EM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">TM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">Total Books</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  let totalEM = 0, totalTM = 0, totalAll = 0;
+
+  rows.forEach((x, i) => {
+    let em = Number(x.em || 0);
+    let tm = Number(x.tm || 0);
+    let tot = Number(x.total || (em + tm));
+    totalEM += em;
+    totalTM += tm;
+    totalAll += tot;
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.district)}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.incharge || "—")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>${tot.toLocaleString("en-IN")}</b></td>
+      </tr>
+    `;
+  });
+
+  if (rows.length) {
+    content += `
+      <tr style="background:#f1f5f9; font-weight:bold;">
+        <td colspan="4" style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Total</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalEM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalTM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${totalAll.toLocaleString("en-IN")}</td>
+      </tr>
+    `;
+  } else {
+    content += `<tr><td colspan="8" style="text-align:center; padding:20px; color:#64748b;">No matching books requirements found.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printForm2BookRequirementsContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printForm2BookRequirements").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Book_Requirements_List";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printForm2BookRequirements").classList.remove("print-active");
+  }, 600);
+}
+
+
 function closeModal(){modal.classList.remove("show")}
 function printTab(id){
  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("print-active"));
@@ -2241,10 +2917,35 @@ function printTab(id){
  setTimeout(()=>document.getElementById(id).classList.remove("print-active"),600)
 }
 function exportCSV(){
- let rows=[["District","Reception Point","In-charge","Mobile","EM","TM","Total Books","Completed","Remarks"]];
- db.entries.forEach(x=>rows.push([x.district,x.point,x.incharge,x.mobile,x.em,x.tm,x.total,x.completed,x.remarks]));
- let csv=rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
- let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="Ganitha_Deepthi_2026_27_Distribution.csv";a.click()
+  let centres = scopedRowsGD(db.receptionCentres || []);
+  let rows = [["District", "Reception Centre Name", "Address", "In-charge Name", "Mobile Number", "EM Requirement", "TM Requirement", "Total Requirement", "Remarks"]];
+  
+  centres.forEach(c => {
+    let req = db.bookRequirements.find(r => r.district === c.district && r.centreName === c.centreName);
+    let em = req ? (req.em || 0) : 0;
+    let tm = req ? (req.tm || 0) : 0;
+    let total = req ? (req.total || 0) : 0;
+    let reqRemarks = req ? (req.remarks || "") : "";
+    let combinedRemarks = c.remarks ? (reqRemarks ? c.remarks + " | " + reqRemarks : c.remarks) : reqRemarks;
+    
+    rows.push([
+      c.district,
+      c.centreName,
+      c.address,
+      c.incharge,
+      c.mobile,
+      em,
+      tm,
+      total,
+      combinedRemarks
+    ]);
+  });
+  
+  let csv = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+  let a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv"}));
+  a.download = "Ganitha_Deepthi_2026_27_Reception_Centres.csv";
+  a.click();
 }
 modal.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
 if (AWS_API_URL) {
@@ -2270,6 +2971,9 @@ function initSessionAndRender() {
         const first=document.querySelector('#districtPrimaryTabs .tab[data-tab-id="distribution"]');
         if(first) showTab("distribution",first);
       }
+    } else if(session.role==="distributor") {
+      const first=document.querySelector('.tabs .tab[data-tab-id="dashboard"]');
+      if(first) showTab("dashboard",first);
     }
   }
   roleChange();renderAll();updateSessionInfo();
