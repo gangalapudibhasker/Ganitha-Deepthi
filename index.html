@@ -473,6 +473,45 @@ body.distributor-mode #addCentreBtn, body.distributor-mode #addRequirementBtn, b
   </div>
 </section>
 
+<section id="printBooksToBeSent" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>⏳ Books to be Sent (Pending Dispatch) Printout</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('dashboard')">← Back to Dashboard</button>
+      </div>
+    </div>
+    <div id="printBooksToBeSentContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
+<section id="printSentBooks" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>✔ Sent Books (Dispatched) Printout</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('dashboard')">← Back to Dashboard</button>
+      </div>
+    </div>
+    <div id="printSentBooksContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
+<section id="printCombinedDispatch" class="panel">
+  <div class="card section">
+    <div class="head">
+      <h2>📦 Combined Books Dispatch Report Printout</h2>
+      <div class="actions">
+        <button class="btn primary printbtn" onclick="window.print()">🖨 Print</button>
+        <button class="btn secondary" onclick="showTab('dashboard')">← Back to Dashboard</button>
+      </div>
+    </div>
+    <div id="printCombinedDispatchContent" style="background:#fff; padding:15px; border-radius:8px;"></div>
+  </div>
+</section>
+
 <section id="printDistrictAccounts" class="panel">
   <div class="card section">
     <div class="head">
@@ -943,98 +982,7 @@ function showTab(id,btn){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function getDistrictReceptionCentresHtml(d) {
-  let centres = db.receptionCentres.filter(x => x.district === d);
-  if (centres.length === 0) {
-    return `<span style="color:#64748b; font-style:italic; font-size:12px;">No reception centres registered yet</span>`;
-  }
-  return centres.map(c => {
-    let reqs = db.bookRequirements.filter(r => r.district === d && r.centreName === c.centreName);
-    let em = reqs.reduce((sum, r) => sum + Number(r.em || 0), 0);
-    let tm = reqs.reduce((sum, r) => sum + Number(r.tm || 0), 0);
-    let total = reqs.reduce((sum, r) => sum + Number(r.total || 0), 0);
-    return `
-      <div style="margin-bottom: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; font-size:12px;">
-        <div style="font-weight: 700; color: #10265c; margin-bottom: 2px;">🏫 ${esc(c.centreName)}</div>
-        <div style="color: #64748b; margin-bottom: 2px;">📍 ${esc(c.address)}</div>
-        <div style="color: #334155; margin-bottom: 4px;">👤 In-charge: <b>${esc(c.incharge)}</b> (${esc(c.mobile)})</div>
-        <div style="font-weight: 600; color: #2563eb; background:#eff6ff; padding:2px 6px; border-radius:4px; display:inline-block;">
-          Books: EM: ${em.toLocaleString("en-IN")}, TM: ${tm.toLocaleString("en-IN")}, Total: <b>${total.toLocaleString("en-IN")}</b>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-function printReceptionCentres() {
-  let checkedDistricts = [...document.querySelectorAll(".print-select-checkbox:checked")].map(cb => cb.getAttribute("data-district"));
-  let printedCount = 0;
-  let content = `<div style="font-family:sans-serif; padding:20px;">`;
-  districts.forEach(d => {
-    if (checkedDistricts.length > 0 && !checkedDistricts.includes(d)) return;
-    let centres = db.receptionCentres.filter(c => c.district === d);
-    if (centres.length === 0) return;
-    printedCount++;
-    
-    content += `
-      <div style="margin-bottom: 30px; page-break-inside: avoid;">
-        <h3 style="border-bottom: 2px solid #10265c; padding-bottom: 5px; color: #10265c; margin-bottom:10px;">🏢 District: ${esc(d)}</h3>
-        <table style="width:100%; border-collapse:collapse; font-size:12px;">
-          <thead>
-            <tr style="background:#f1f5f9;">
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">Reception Centre</th>
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:25%;">Address</th>
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">In-charge &amp; Mobile</th>
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">EM Books</th>
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">TM Books</th>
-              <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">Total Books</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-    
-    centres.forEach((c, idx) => {
-      let reqs = db.bookRequirements.filter(r => r.district === d && r.centreName === c.centreName);
-      let em = reqs.reduce((sum, r) => sum + Number(r.em || 0), 0);
-      let tm = reqs.reduce((sum, r) => sum + Number(r.tm || 0), 0);
-      let total = reqs.reduce((sum, r) => sum + Number(r.total || 0), 0);
-      
-      content += `
-        <tr>
-          <td style="border:1px solid #cbd5e1; padding:6px;">${idx + 1}</td>
-          <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(c.centreName)}</b></td>
-          <td style="border:1px solid #cbd5e1; padding:6px;">${esc(c.address)}</td>
-          <td style="border:1px solid #cbd5e1; padding:6px;">${esc(c.incharge)}<br><small style="color:#64748b;">${esc(c.mobile)}</small></td>
-          <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${em.toLocaleString("en-IN")}</td>
-          <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
-          <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>${total.toLocaleString("en-IN")}</b></td>
-        </tr>
-      `;
-    });
-    
-    content += `
-          </tbody>
-        </table>
-      </div>
-    `;
-  });
-  
-  if (printedCount === 0) {
-    content += `<div style="text-align:center; padding:40px; color:#64748b;">No reception centres entered in the database.</div>`;
-  }
-  
-  content += `</div>`;
-  
-  document.getElementById("printReceptionCentresContent").innerHTML = content;
-  
-  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
-  document.getElementById("printReceptionCentres").classList.add("print-active");
-  document.title = "Ganitha_Deepthi_Reception_Centres";
-  window.print();
-  setTimeout(() => {
-    document.getElementById("printReceptionCentres").classList.remove("print-active");
-  }, 600);
-}
+
 function renderDashboardWidgets(){
   const e=visibleEntries(), p=visiblePayments();
   const reqs = scopedRowsGD(db.bookRequirements || []);
@@ -1346,6 +1294,10 @@ function toggleDistrictDispatch(district, currentStatus) {
 }
 
 function toggleRequirementDispatch(reqId, currentStatus) {
+  if (currentStatus === "Sent" && session.role !== "final") {
+    alert("Only Final Admin can mark sent books back to pending.");
+    return;
+  }
   const req = db.bookRequirements.find(x => x.id === reqId);
   if (!req) return;
   req.status = currentStatus === "Sent" ? "Pending" : "Sent";
@@ -1562,10 +1514,319 @@ function printDispatchSummary() {
   }, 600);
 }
 
+function printBooksToBeSent() {
+  const q = (document.getElementById("distributorSearch")?.value || "").toLowerCase().trim();
+  const reqs = db.bookRequirements || [];
+  let rows = reqs.filter(x => (x.status || "Pending") === "Pending");
+  
+  if (q) {
+    rows = rows.filter(x => {
+      let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+      let mob = centre ? centre.mobile : "";
+      let addr = centre ? centre.address : "";
+      return [x.district, x.centreName, x.incharge, mob, addr, x.remarks].join(" ").toLowerCase().includes(q);
+    });
+  }
+
+  let totalEM = 0, totalTM = 0, totalAll = 0;
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#b45309; margin-top: 0; margin-bottom: 5px;">Ganitha Deepthi 2026–27 | Books to be Sent (Pending Dispatch)</h3>`;
+  content += `<div style="text-align:center; color:#64748b; font-size:12px; margin-bottom: 15px;">Generated on: ${new Date().toLocaleString()} | Total Pending Centres: <b>${rows.length}</b></div>`;
+
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#fffbeb; border-bottom:2px solid #fce8bd;">
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:15%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:22%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:22%;">In-charge &amp; Contact</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%;">EM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%;">TM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:14%;">Total Books</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rows.forEach((x, i) => {
+    let em = Number(x.em || 0);
+    let tm = Number(x.tm || 0);
+    let tot = Number(x.total || (em + tm));
+    totalEM += em;
+    totalTM += tm;
+    totalAll += tot;
+    let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+    let mobile = centre ? centre.mobile : "—";
+    let address = centre && centre.address ? `<br><small style="color:#64748b;">📍 ${esc(centre.address)}</small>` : "";
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:7px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px;"><b>${esc(x.district)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:7px;"><b>${esc(x.centreName)}</b>${address}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">📞 ${esc(mobile)}</small></td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right; color:#b45309;"><b>${tot.toLocaleString("en-IN")}</b></td>
+      </tr>
+    `;
+  });
+
+  if (rows.length > 0) {
+    content += `
+      <tr style="background:#fffbeb; font-weight:bold;">
+        <td colspan="4" style="border:1px solid #cbd5e1; padding:8px; text-align:left;">Total Pending Books</td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right;">${totalEM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right;">${totalTM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right; color:#b45309;">${totalAll.toLocaleString("en-IN")}</td>
+      </tr>
+    `;
+  } else {
+    content += `<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">No pending books to be sent.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printBooksToBeSentContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printBooksToBeSent").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Books_To_Be_Sent";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printBooksToBeSent").classList.remove("print-active");
+  }, 600);
+}
+
+function printSentBooks() {
+  const q = (document.getElementById("distributorSearch")?.value || "").toLowerCase().trim();
+  const reqs = db.bookRequirements || [];
+  let rows = reqs.filter(x => x.status === "Sent");
+  
+  if (q) {
+    rows = rows.filter(x => {
+      let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+      let mob = centre ? centre.mobile : "";
+      let addr = centre ? centre.address : "";
+      return [x.district, x.centreName, x.incharge, mob, addr, x.remarks].join(" ").toLowerCase().includes(q);
+    });
+  }
+
+  let totalEM = 0, totalTM = 0, totalAll = 0;
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#15803d; margin-top: 0; margin-bottom: 5px;">Ganitha Deepthi 2026–27 | Sent Books (Dispatched)</h3>`;
+  content += `<div style="text-align:center; color:#64748b; font-size:12px; margin-bottom: 15px;">Generated on: ${new Date().toLocaleString()} | Total Dispatched Centres: <b>${rows.length}</b></div>`;
+
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f2fbf5; border-bottom:2px solid #cdeed7;">
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:15%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:22%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:22%;">In-charge &amp; Contact</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%;">EM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%;">TM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:14%;">Total Books</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rows.forEach((x, i) => {
+    let em = Number(x.em || 0);
+    let tm = Number(x.tm || 0);
+    let tot = Number(x.total || (em + tm));
+    totalEM += em;
+    totalTM += tm;
+    totalAll += tot;
+    let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+    let mobile = centre ? centre.mobile : "—";
+    let address = centre && centre.address ? `<br><small style="color:#64748b;">📍 ${esc(centre.address)}</small>` : "";
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:7px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px;"><b>${esc(x.district)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:7px;"><b>${esc(x.centreName)}</b>${address}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">📞 ${esc(mobile)}</small></td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right; color:#15803d;"><b>${tot.toLocaleString("en-IN")}</b></td>
+      </tr>
+    `;
+  });
+
+  if (rows.length > 0) {
+    content += `
+      <tr style="background:#f2fbf5; font-weight:bold;">
+        <td colspan="4" style="border:1px solid #cbd5e1; padding:8px; text-align:left;">Total Dispatched Books</td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right;">${totalEM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right;">${totalTM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:8px; text-align:right; color:#15803d;">${totalAll.toLocaleString("en-IN")}</td>
+      </tr>
+    `;
+  } else {
+    content += `<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">No sent books recorded yet.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printSentBooksContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printSentBooks").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Sent_Books";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printSentBooks").classList.remove("print-active");
+  }, 600);
+}
+
+function printCombinedDispatch() {
+  const q = (document.getElementById("distributorSearch")?.value || "").toLowerCase().trim();
+  const reqs = db.bookRequirements || [];
+  let rows = [...reqs];
+  
+  if (q) {
+    rows = rows.filter(x => {
+      let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+      let mob = centre ? centre.mobile : "";
+      let addr = centre ? centre.address : "";
+      return [x.district, x.centreName, x.incharge, mob, addr, x.remarks].join(" ").toLowerCase().includes(q);
+    });
+  }
+
+  // Calculate statistics
+  let pendingRows = rows.filter(x => (x.status || "Pending") === "Pending");
+  let sentRows = rows.filter(x => x.status === "Sent");
+
+  let pendingEM = pendingRows.reduce((s, x) => s + Number(x.em || 0), 0);
+  let pendingTM = pendingRows.reduce((s, x) => s + Number(x.tm || 0), 0);
+  let pendingTot = pendingRows.reduce((s, x) => s + Number(x.total || (Number(x.em||0) + Number(x.tm||0))), 0);
+
+  let sentEM = sentRows.reduce((s, x) => s + Number(x.em || 0), 0);
+  let sentTM = sentRows.reduce((s, x) => s + Number(x.tm || 0), 0);
+  let sentTot = sentRows.reduce((s, x) => s + Number(x.total || (Number(x.em||0) + Number(x.tm||0))), 0);
+
+  let totalEM = pendingEM + sentEM;
+  let totalTM = pendingTM + sentTM;
+  let grandTotal = pendingTot + sentTot;
+
+  let content = `<div style="font-family:sans-serif; padding:10px;">`;
+  content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
+  content += `<h3 style="text-align:center; color:#12275b; margin-top: 0; margin-bottom: 10px;">Ganitha Deepthi 2026–27 | Combined Books Dispatch Report</h3>`;
+  content += `<div style="text-align:center; color:#64748b; font-size:12px; margin-bottom: 15px;">Generated on: ${new Date().toLocaleString()}</div>`;
+
+  // Summary box
+  content += `
+    <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:15px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; font-size:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:120px; text-align:center; border-right:1px solid #e2e8f0;">
+        <div style="color:#64748b;">Total Centres</div>
+        <div style="font-size:16px; font-weight:800; color:#10265c;">${rows.length}</div>
+      </div>
+      <div style="flex:1; min-width:150px; text-align:center; border-right:1px solid #e2e8f0;">
+        <div style="color:#b45309;">⏳ Books to be Sent (Pending)</div>
+        <div style="font-size:16px; font-weight:800; color:#b45309;">${pendingTot.toLocaleString("en-IN")} <small style="font-size:11px; font-weight:normal;">(${pendingRows.length} centres)</small></div>
+      </div>
+      <div style="flex:1; min-width:150px; text-align:center; border-right:1px solid #e2e8f0;">
+        <div style="color:#15803d;">✔ Sent Books (Dispatched)</div>
+        <div style="font-size:16px; font-weight:800; color:#15803d;">${sentTot.toLocaleString("en-IN")} <small style="font-size:11px; font-weight:normal;">(${sentRows.length} centres)</small></div>
+      </div>
+      <div style="flex:1; min-width:140px; text-align:center;">
+        <div style="color:#2563eb;">📚 Grand Total Books</div>
+        <div style="font-size:16px; font-weight:800; color:#2563eb;">${grandTotal.toLocaleString("en-IN")}</div>
+      </div>
+    </div>
+  `;
+
+  content += `
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1;">
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:13%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:18%;">In-charge &amp; Contact</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:9%;">EM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:9%;">TM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:11%;">Total Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:center; width:15%;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rows.forEach((x, i) => {
+    let em = Number(x.em || 0);
+    let tm = Number(x.tm || 0);
+    let tot = Number(x.total || (em + tm));
+    let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+    let mobile = centre ? centre.mobile : "—";
+    let address = centre && centre.address ? `<br><small style="color:#64748b;">📍 ${esc(centre.address)}</small>` : "";
+    let isSent = x.status === "Sent";
+
+    content += `
+      <tr>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.district)}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName)}</b>${address}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">📞 ${esc(mobile)}</small></td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${em.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right; font-weight:bold; color:${isSent ? '#15803d' : '#b45309'};">${tot.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">
+          <span style="padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: bold; ${isSent ? 'background:#dcfce7; color:#166534;' : 'background:#fff7ed; color:#9a3412;'}">
+            ${isSent ? '✔ Sent' : '⏳ Pending'}
+          </span>
+        </td>
+      </tr>
+    `;
+  });
+
+  if (rows.length > 0) {
+    content += `
+      <tr style="background:#f1f5f9; font-weight:bold;">
+        <td colspan="4" style="border:1px solid #cbd5e1; padding:7px; text-align:left;">Grand Total</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right;">${totalEM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right;">${totalTM.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:right; color:#2563eb;">${grandTotal.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:center; font-size:11px;">${sentRows.length} Sent / ${pendingRows.length} Pending</td>
+      </tr>
+    `;
+  } else {
+    content += `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No books requirement records found.</td></tr>`;
+  }
+
+  content += `
+      </tbody>
+    </table>
+  </div>
+  `;
+
+  document.getElementById("printCombinedDispatchContent").innerHTML = content;
+  document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
+  document.getElementById("printCombinedDispatch").classList.add("print-active");
+  document.title = "Ganitha_Deepthi_Combined_Dispatch_Report";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("printCombinedDispatch").classList.remove("print-active");
+  }, 600);
+}
+
 function renderDistributorConfirmation(){
   const card=document.getElementById("distributorConfirmCard");
   if(!card) return;
-  const isDist=session.role==="distributor";
+  const isDist = session.role === "distributor" || session.role === "final";
   card.classList.toggle("hidden",!isDist);
   if(!isDist) return;
 
@@ -1656,6 +1917,12 @@ function renderDistributorConfirmation(){
               let tot = Number(x.total || (em + tm));
               let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
               let mobile = centre ? centre.mobile : "—";
+              const isFinal = session.role === "final";
+              const actionContent = isFinal
+                ? `<button class="btn secondary" onclick="toggleRequirementDispatch('${esc(x.id)}', 'Sent')" style="padding:5px 10px; font-size:12px; font-weight:800; background:#eef2ff; color:#3730a3;">
+                    Mark Pending ⏳
+                  </button>`
+                : `<span style="color:#15803d; font-weight:750; font-size:12px;">✔ Sent</span>`;
               return `
                 <tr class="distributor-row" style="border-bottom:1px solid #edf1f6;">
                   <td style="padding:10px;">${i + 1}</td>
@@ -1666,9 +1933,7 @@ function renderDistributorConfirmation(){
                   <td style="padding:10px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
                   <td style="padding:10px; text-align:right; color:#16a34a;"><b>${tot.toLocaleString("en-IN")}</b></td>
                   <td style="padding:10px; text-align:center;">
-                    <button class="btn secondary" onclick="toggleRequirementDispatch('${esc(x.id)}', 'Sent')" style="padding:5px 10px; font-size:12px; font-weight:800; background:#eef2ff; color:#3730a3;">
-                      Mark Pending ⏳
-                    </button>
+                    ${actionContent}
                   </td>
                 </tr>
               `;
@@ -1687,24 +1952,27 @@ function renderDistributorConfirmation(){
         <h2 style="font-size:22px; color:#111d55; font-weight:800;">📦 Books Dispatch Management</h2>
         <div class="small" style="margin-top:4px; color:#64748b;">Confirm dispatch status and view book requirements for all districts.</div>
       </div>
-      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <button class="btn printbtn" onclick="printReceptionCentres()" style="padding:6px 12px; font-size:13px; font-weight:800;">🖨 Print Reception Centres</button>
-        <button class="btn printbtn" onclick="printDispatchSummary()" style="padding:6px 12px; font-size:13px; font-weight:800; background:#7c3aed; color:#fff;">🖨 Print Dispatch Summary</button>
-        <input id="distributorSearch" placeholder="Search centre / district / in-charge..." oninput="filterDistributorTable()" style="max-width:250px; padding:6px 10px; font-size:12px;">
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button class="btn printbtn" onclick="printCombinedDispatch()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#10265c; color:#fff;">🖨 Print Combined (All)</button>
+        <button class="btn printbtn" onclick="printBooksToBeSent()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#b45309; color:#fff;">🖨 Print Books to be Sent</button>
+        <button class="btn printbtn" onclick="printSentBooks()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#15803d; color:#fff;">🖨 Print Sent Books</button>
+        <button class="btn printbtn" onclick="printReceptionCentres()" style="padding:6px 11px; font-size:12px; font-weight:800;">🖨 Print Reception Centres</button>
+        <button class="btn printbtn" onclick="printDispatchSummary()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#7c3aed; color:#fff;">🖨 Print Dispatch Summary</button>
+        <input id="distributorSearch" placeholder="Search centre / district / in-charge..." oninput="filterDistributorTable()" style="max-width:220px; padding:6px 10px; font-size:12px;">
       </div>
     </div>
     
     <div style="margin-bottom:25px;">
-      <h3 style="font-size:16px; color:#b45309; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
-        ⏳ పంపించాల్సిన Books (Books to be Sent - Pending Dispatch)
+      <h3 style="font-size:16px; color:#b45309; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+        ⏳ Books to be Sent
         <span class="badge pending" style="font-size:12px; padding:2px 8px;">${pendingReqs.length} Pending</span>
       </h3>
       ${pendingHtml}
     </div>
     
     <div>
-      <h3 style="font-size:16px; color:#15803d; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
-        ✔ పంపించేసిన Books (Sent Books - Dispatched)
+      <h3 style="font-size:16px; color:#15803d; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+        ✔ Sent Books
         <span class="badge done" style="font-size:12px; padding:2px 8px;">${sentReqs.length} Sent</span>
       </h3>
       ${sentHtml}
