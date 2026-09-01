@@ -25,10 +25,10 @@ A client-side single-page dashboard application built to manage and audit the di
 *   **Password:** `APMF@<abbreviation>2026` (e.g., `APMF@ASR2026`)
 *   *Permissions:* Add local distribution records, upload receipts, and log payments.
 
-### 3. Books Distributor (Dispatch Confirmation)
+### 3. Books Distributor
 *   **Username:** `apmf_distributor`
 *   **Password:** `APMF@DIST2026`
-*   *Permissions:* Verify and mark book dispatches as completed.
+*   *Permissions:* Confirm dispatches and book receipts across all districts.
 
 ---
 
@@ -45,4 +45,4 @@ Since the application is built entirely as a single-page HTML application (`inde
 ## 🔒 Security & Data Persistence
 
 *   **Database:** Powered by browser `localStorage`.
-*   **Backups:** To prevent data loss when clearing browser cache, utilize the **Download School List** button in the dashboard to save your offline records.
+*   **Backups:** To prevent data loss when clearing browser cache, utilize the **Download Reception Centers** button in the dashboard to save your offline records.
