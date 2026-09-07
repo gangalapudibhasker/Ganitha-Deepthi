@@ -737,6 +737,65 @@ function getRequirementDispatchInfo(x) {
     statusCode, statusText, statusBadge
   };
 }
+
+function getRequirementSentDate(x) {
+  if (x.sentDate && /^\d{4}-\d{2}-\d{2}$/.test(x.sentDate)) return x.sentDate;
+  if (x.emSentDate && /^\d{4}-\d{2}-\d{2}$/.test(x.emSentDate)) return x.emSentDate;
+  if (x.tmSentDate && /^\d{4}-\d{2}-\d{2}$/.test(x.tmSentDate)) return x.tmSentDate;
+  let t = String(x.sentDate || x.emSentDate || x.tmSentDate || x.emSentTime || x.tmSentTime || x.date || x.createdAt || "");
+  if (t) {
+    let mIso = t.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (mIso) return `${mIso[1]}-${mIso[2]}-${mIso[3]}`;
+    let mDmY = t.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+    if (mDmY) {
+      let day = mDmY[1].padStart(2, "0");
+      let month = mDmY[2].padStart(2, "0");
+      let year = mDmY[3];
+      return `${year}-${month}-${day}`;
+    }
+    let d = new Date(t);
+    if (!isNaN(d.getTime())) {
+      let yr = d.getFullYear();
+      let mo = String(d.getMonth() + 1).padStart(2, "0");
+      let da = String(d.getDate()).padStart(2, "0");
+      return `${yr}-${mo}-${da}`;
+    }
+  }
+  let today = new Date();
+  let yr = today.getFullYear();
+  let mo = String(today.getMonth() + 1).padStart(2, "0");
+  let da = String(today.getDate()).padStart(2, "0");
+  return `${yr}-${mo}-${da}`;
+}
+
+function formatDisplayDate(dStr) {
+  if (!dStr) return "—";
+  let parts = String(dStr).split("-");
+  if (parts.length === 3 && parts[0].length === 4) {
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+  return dStr;
+}
+
+window.gdCurrentDispatchDate = new Date().toISOString().slice(0, 10);
+window.gdSentFilterDate = window.gdCurrentDispatchDate;
+
+function setSentBooksDateFilter(d) {
+  window.gdSentFilterDate = d || "";
+  if (d) {
+    window.gdCurrentDispatchDate = d;
+  }
+  renderDistributorConfirmation();
+}
+
+function updateActiveDispatchDate(d) {
+  window.gdSentFilterDate = d || "";
+  if (d) {
+    window.gdCurrentDispatchDate = d;
+  }
+  renderDistributorConfirmation();
+}
+
 db.bookPrice = (db.bookPrice === 135) ? 60 : (db.bookPrice || 60);
 let session=JSON.parse(sessionStorage.getItem("gd_session_v5")||"null")||{role:"",district:"",username:"",booksSent:false};
 
@@ -1358,19 +1417,33 @@ function dispatchMedium(reqId, medium, newStatus) {
   const req = db.bookRequirements.find(x => x.id === reqId);
   if (!req) return;
 
+  const activeDateEl = document.getElementById("dispatchDatePickerInput") || document.getElementById("activeDispatchDate");
+  const selectedDate = (activeDateEl ? activeDateEl.value : null) || window.gdCurrentDispatchDate || new Date().toISOString().slice(0, 10);
   const nowTime = new Date().toLocaleString();
+
   if (medium === "EM") {
     req.emStatus = newStatus;
-    if (newStatus === "Sent") req.emSentTime = nowTime;
+    if (newStatus === "Sent") {
+      req.emSentTime = nowTime;
+      req.emSentDate = selectedDate;
+      req.sentDate = selectedDate;
+    }
   } else if (medium === "TM") {
     req.tmStatus = newStatus;
-    if (newStatus === "Sent") req.tmSentTime = nowTime;
+    if (newStatus === "Sent") {
+      req.tmSentTime = nowTime;
+      req.tmSentDate = selectedDate;
+      req.sentDate = selectedDate;
+    }
   } else if (medium === "BOTH") {
     req.emStatus = newStatus;
     req.tmStatus = newStatus;
     if (newStatus === "Sent") {
       req.emSentTime = nowTime;
       req.tmSentTime = nowTime;
+      req.emSentDate = selectedDate;
+      req.tmSentDate = selectedDate;
+      req.sentDate = selectedDate;
     }
   }
 
@@ -1439,6 +1512,61 @@ function toggleRequirementDispatch(reqId, currentStatus) {
   const targetStatus = currentStatus === "Sent" ? "Pending" : "Sent";
   dispatchMedium(reqId, "BOTH", targetStatus);
 }
+
+function confirmRequirementReceived(reqId) {
+  if (!session || !session.role) {
+    alert("Please log in first.");
+    return;
+  }
+  const req = db.bookRequirements.find(x => x.id === reqId);
+  if (!req) return;
+
+  const centreName = req.centreName || "this centre";
+  const ok = confirm(`Are you sure Ganitha Deepthi books have been received at ${centreName} (${req.district}) via ANL Parcel Service?`);
+  if (!ok) return;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const nowTime = new Date().toLocaleString();
+
+  req.received = true;
+  req.receivedStatus = "Received";
+  req.receivedDate = today;
+  req.receivedTime = nowTime;
+  req.receivedBy = session.username || session.role;
+  req.emReceived = (req.emStatus === "Sent");
+  req.tmReceived = (req.tmStatus === "Sent");
+
+  audit(`Marked books as Received for ${req.centreName} (${req.district}) via ANL Parcel Service`);
+  save("requirement", req);
+  renderAll();
+  toast("Books marked as Received ✔");
+}
+
+function revertRequirementReceived(reqId) {
+  if (!session || session.role !== "final") {
+    alert("Only Final Admin can revert received status.");
+    return;
+  }
+  const req = db.bookRequirements.find(x => x.id === reqId);
+  if (!req) return;
+
+  const ok = confirm(`Revert received status for ${req.centreName || "this centre"} back to In-Transit / Pending receipt?`);
+  if (!ok) return;
+
+  req.received = false;
+  req.receivedStatus = "Pending";
+  req.receivedDate = null;
+  req.receivedTime = null;
+  req.receivedBy = null;
+  req.emReceived = false;
+  req.tmReceived = false;
+
+  audit(`Reverted received status for ${req.centreName} (${req.district})`);
+  save("requirement", req);
+  renderAll();
+  toast("Received status reverted ↩");
+}
+
 
 function updateDistributorStatusFromRequirements(district) {
   const reqs = db.bookRequirements.filter(x => x.district === district);
@@ -1803,10 +1931,14 @@ function printBooksToBeSent() {
   }, 600);
 }
 
-function printSentBooks() {
+function printSentBooks(filterDate = null) {
   const q = (document.getElementById("distributorSearch")?.value || "").toLowerCase().trim();
   const reqs = db.bookRequirements || [];
   let rows = reqs.filter(x => getRequirementDispatchInfo(x).sentTotal > 0);
+
+  if (filterDate) {
+    rows = rows.filter(x => getRequirementSentDate(x) === filterDate);
+  }
 
   if (q) {
     rows = rows.filter(x => {
@@ -1820,21 +1952,26 @@ function printSentBooks() {
   let totalSentEM = 0, totalSentTM = 0, totalSentAll = 0;
   let content = `<div style="font-family:sans-serif; padding:10px;">`;
   content += `<h2 style="text-align:center; color:#10265c; margin-bottom: 5px;">Andhra Pradesh Mathematics Forum (APMF)</h2>`;
-  content += `<h3 style="text-align:center; color:#15803d; margin-top: 0; margin-bottom: 5px;">Ganitha Deepthi 2026–27 | Sent Books (Dispatched)</h3>`;
-  content += `<div style="text-align:center; color:#64748b; font-size:12px; margin-bottom: 15px;">Generated on: ${new Date().toLocaleString()} | Total Dispatched Centres: <b>${rows.length}</b></div>`;
+  if (filterDate) {
+    content += `<h3 style="text-align:center; color:#15803d; margin-top: 0; margin-bottom: 5px;">Ganitha Deepthi 2026–27 | Sent Books (Dispatched on ${formatDisplayDate(filterDate)})</h3>`;
+    content += `<div style="text-align:center; color:#64748b; font-size:12px; margin-bottom: 15px;">Dispatched Date: <b style="color:#15803d; font-size:14px;">${formatDisplayDate(filterDate)}</b> | Total Centres Dispatched: <b>${rows.length}</b></div>`;
+  } else {
+    content += `<h3 style="text-align:center; color:#15803d; margin-top: 0; margin-bottom: 5px;">Ganitha Deepthi 2026–27 | Sent Books (Dispatched) - Date-wise Summary</h3>`;
+    content += `<div style="text-align:center; color:#64748b; font-size:12px; margin-bottom: 15px;">Generated on: ${new Date().toLocaleString()} | Total Dispatched Centres: <b>${rows.length}</b></div>`;
+  }
 
   content += `
     <table style="width:100%; border-collapse:collapse; font-size:12px;">
       <thead>
         <tr style="background:#f2fbf5; border-bottom:2px solid #cdeed7;">
           <th style="border:1px solid #cbd5e1; padding:7px; text-align:center; width:4%;">S.No.</th>
-          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:15%;">District</th>
-          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:20%;">Reception Centre</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:center; width:12%;">Dispatched Date</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:13%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:19%;">Reception Centre</th>
           <th style="border:1px solid #cbd5e1; padding:7px; text-align:left; width:18%;">In-charge &amp; Contact</th>
           <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%; background:#e6f9ed;">EM Books Sent</th>
           <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%; background:#e6f9ed;">TM Books Sent</th>
-          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:11%; background:#e6f9ed;">Total Books Sent</th>
-          <th style="border:1px solid #cbd5e1; padding:7px; text-align:center; width:10%;">Status</th>
+          <th style="border:1px solid #cbd5e1; padding:7px; text-align:right; width:12%; background:#e6f9ed;">Total Books Sent</th>
         </tr>
       </thead>
       <tbody>
@@ -1847,8 +1984,9 @@ function printSentBooks() {
     totalSentAll += info.sentTotal;
 
     let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
-    let mobile = centre ? centre.mobile : "—";
+    let mobile = (centre && centre.mobile) ? centre.mobile : (x.mobile || "—");
     let address = centre && centre.address ? `<br><small style="color:#64748b;">📍 ${esc(centre.address)}</small>` : "";
+    let sDate = getRequirementSentDate(x);
 
     let emDisplay = info.sentEM > 0 ? `<b style="color:#15803d;">${info.sentEM.toLocaleString("en-IN")}</b>` : `<span style="color:#94a3b8;">0</span>`;
     let tmDisplay = info.sentTM > 0 ? `<b style="color:#15803d;">${info.sentTM.toLocaleString("en-IN")}</b>` : `<span style="color:#94a3b8;">0</span>`;
@@ -1856,13 +1994,13 @@ function printSentBooks() {
     content += `
       <tr>
         <td style="border:1px solid #cbd5e1; padding:7px; text-align:center;">${i + 1}</td>
+        <td style="border:1px solid #cbd5e1; padding:7px; text-align:center; font-weight:bold; color:#166534;">📅 ${formatDisplayDate(sDate)}</td>
         <td style="border:1px solid #cbd5e1; padding:7px;"><b>${esc(x.district)}</b></td>
         <td style="border:1px solid #cbd5e1; padding:7px;"><b>${esc(x.centreName)}</b>${address}</td>
-        <td style="border:1px solid #cbd5e1; padding:7px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">📞 ${esc(mobile)}</small></td>
+        <td style="border:1px solid #cbd5e1; padding:7px;">${esc(x.incharge || "—")}<br><small style="color:#0369a1; font-weight:bold;">📞 ${esc(mobile)}</small></td>
         <td style="border:1px solid #cbd5e1; padding:7px; text-align:right; background:#f9fefb;">${emDisplay}</td>
         <td style="border:1px solid #cbd5e1; padding:7px; text-align:right; background:#f9fefb;">${tmDisplay}</td>
         <td style="border:1px solid #cbd5e1; padding:7px; text-align:right; background:#f9fefb; color:#15803d;"><b style="font-size:13px;">${info.sentTotal.toLocaleString("en-IN")}</b></td>
-        <td style="border:1px solid #cbd5e1; padding:7px; text-align:center;">${info.statusBadge}</td>
       </tr>
     `;
   });
@@ -1870,15 +2008,14 @@ function printSentBooks() {
   if (rows.length > 0) {
     content += `
       <tr style="background:#f2fbf5; font-weight:bold;">
-        <td colspan="4" style="border:1px solid #cbd5e1; padding:8px; text-align:left;">Total Dispatched Books</td>
+        <td colspan="5" style="border:1px solid #cbd5e1; padding:8px; text-align:left;">Total Dispatched Books ${filterDate ? 'on ' + formatDisplayDate(filterDate) : ''}</td>
         <td style="border:1px solid #cbd5e1; padding:8px; text-align:right; color:#15803d;">${totalSentEM.toLocaleString("en-IN")}</td>
         <td style="border:1px solid #cbd5e1; padding:8px; text-align:right; color:#15803d;">${totalSentTM.toLocaleString("en-IN")}</td>
         <td style="border:1px solid #cbd5e1; padding:8px; text-align:right; color:#15803d; font-size:13px;">${totalSentAll.toLocaleString("en-IN")}</td>
-        <td style="border:1px solid #cbd5e1; padding:8px;"></td>
       </tr>
     `;
   } else {
-    content += `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No sent books recorded yet.</td></tr>`;
+    content += `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No sent books recorded ${filterDate ? 'for ' + formatDisplayDate(filterDate) : 'yet'}.</td></tr>`;
   }
 
   content += `
@@ -1890,7 +2027,7 @@ function printSentBooks() {
   document.getElementById("printSentBooksContent").innerHTML = content;
   document.querySelectorAll(".panel").forEach(x => x.classList.remove("print-active"));
   document.getElementById("printSentBooks").classList.add("print-active");
-  document.title = "Ganitha_Deepthi_Sent_Books";
+  document.title = "Ganitha_Deepthi_Sent_Books" + (filterDate ? "_" + filterDate : "");
   window.print();
   setTimeout(() => {
     document.getElementById("printSentBooks").classList.remove("print-active");
@@ -2085,13 +2222,10 @@ function renderDistributorConfirmation(){
 
               let actionBtns = [];
               if (info.pendingEM > 0) {
-                actionBtns.push(`<button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'EM', 'Sent')" style="padding:4px 8px; font-size:11px; font-weight:800; background:#2563eb; color:#fff; border-radius:5px; margin:2px;" title="Send English Medium Books only">📦 Send EM (${info.pendingEM})</button>`);
+                actionBtns.push(`<button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'EM', 'Sent')" style="padding:4px 8px; font-size:11px; font-weight:800; background:#2563eb; color:#fff; border-radius:5px; white-space:nowrap;" title="Send English Medium Books only">📦 Send EM (${info.pendingEM})</button>`);
               }
               if (info.pendingTM > 0) {
-                actionBtns.push(`<button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'TM', 'Sent')" style="padding:4px 8px; font-size:11px; font-weight:800; background:#d97706; color:#fff; border-radius:5px; margin:2px;" title="Send Telugu Medium Books">📦 Send TM (${info.pendingTM})</button>`);
-              }
-              if (info.pendingEM > 0 && info.pendingTM > 0) {
-                actionBtns.push(`<button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'BOTH', 'Sent')" style="padding:4px 8px; font-size:11px; font-weight:800; background:#15803d; color:#fff; border-radius:5px; margin:2px;" title="Send Both EM & TM Books">📦 Send All</button>`);
+                actionBtns.push(`<button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'TM', 'Sent')" style="padding:4px 8px; font-size:11px; font-weight:800; background:#d97706; color:#fff; border-radius:5px; white-space:nowrap;" title="Send Telugu Medium Books">📦 Send TM (${info.pendingTM})</button>`);
               }
 
               return `
@@ -2104,7 +2238,7 @@ function renderDistributorConfirmation(){
                   <td style="padding:9px 8px; text-align:right; background:#fffdf5;">${tmCell}</td>
                   <td style="padding:9px 8px; text-align:right; background:#fffdf5; color:#b45309;"><b style="font-size:14px;">${info.pendingTotal.toLocaleString("en-IN")}</b></td>
                   <td style="padding:9px 8px; text-align:center;">
-                    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:2px;">
+                    <div style="display:flex; flex-direction:row; flex-wrap:nowrap; justify-content:center; align-items:center; gap:5px;">
                       ${actionBtns.join("")}
                     </div>
                   </td>
@@ -2119,84 +2253,195 @@ function renderDistributorConfirmation(){
 
   // Build sent table HTML (Sent Books)
   let sentHtml = "";
+  const allSentDates = Array.from(new Set(sentReqs.map(x => getRequirementSentDate(x)))).sort().reverse();
+  const displaySentReqs = window.gdSentFilterDate ? sentReqs.filter(x => getRequirementSentDate(x) === window.gdSentFilterDate) : sentReqs;
+
   if (sentReqs.length === 0) {
     sentHtml = `<div class="empty" style="padding:20px; background:#f2fbf5; border:1px solid #cdeed7; border-radius:10px; color:#15803d; text-align:center;">
       <b>No sent book requirements recorded yet.</b>
     </div>`;
   } else {
-    sentHtml = `
-      <div style="overflow:auto; max-height:380px; border:1px solid #cdeed7; border-radius:10px; box-shadow:0 2px 8px rgba(22,163,74,0.08);">
-        <table style="width:100%; border-collapse:collapse; background:#fff; font-size:13px;">
-          <thead style="background:#f2fbf5; position:sticky; top:0; z-index:2; border-bottom:2px solid #cdeed7;">
-            <tr>
-              <th style="padding:10px 8px; width:4%; text-align:center;">S.No.</th>
-              <th style="padding:10px 8px; width:15%; text-align:left;">District</th>
-              <th style="padding:10px 8px; width:18%; text-align:left;">Reception Centre</th>
-              <th style="padding:10px 8px; width:17%; text-align:left;">In-charge &amp; Mobile</th>
-              <th style="padding:10px 8px; width:12%; text-align:right; background:#e6f9ed;">EM Books Sent</th>
-              <th style="padding:10px 8px; width:12%; text-align:right; background:#e6f9ed;">TM Books Sent</th>
-              <th style="padding:10px 8px; width:12%; text-align:right; background:#e6f9ed;">Total Books Sent</th>
-              <th style="padding:10px 8px; width:16%; text-align:center;">Status &amp; Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${sentReqs.map((x, i) => {
-              const info = getRequirementDispatchInfo(x);
-              let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
-              let mobile = centre ? centre.mobile : "—";
-              const isFinal = session.role === "final";
+    const isFinal = session.role === "final";
 
-              let emSentCell = info.sentEM > 0
-                ? `<b style="color:#15803d; font-size:13px;">${info.sentEM.toLocaleString("en-IN")}</b>`
-                : `<span style="color:#94a3b8;">0</span>`;
-
-              let tmSentCell = info.sentTM > 0
-                ? `<b style="color:#15803d; font-size:13px;">${info.sentTM.toLocaleString("en-IN")}</b>`
-                : `<span style="color:#94a3b8;">0</span>`;
-
-              let extraAction = "";
-              if (info.pendingTM > 0) {
-                extraAction += `<div style="margin-top:4px;"><button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'TM', 'Sent')" style="padding:3px 7px; font-size:10.5px; font-weight:800; background:#d97706; color:#fff; border-radius:4px;" title="Send remaining Telugu Medium books">📦 Send TM (${info.pendingTM})</button></div>`;
-              }
-              if (info.pendingEM > 0) {
-                extraAction += `<div style="margin-top:4px;"><button class="btn" onclick="dispatchMedium('${esc(x.id)}', 'EM', 'Sent')" style="padding:3px 7px; font-size:10.5px; font-weight:800; background:#2563eb; color:#fff; border-radius:4px;" title="Send remaining English Medium books">📦 Send EM (${info.pendingEM})</button></div>`;
-              }
-
-              let revertBtns = "";
-              if (isFinal) {
-                let rList = [];
-                if (info.emStatus === "Sent") {
-                  rList.push(`<button class="btn secondary" onclick="dispatchMedium('${esc(x.id)}', 'EM', 'Pending')" style="padding:2px 5px; font-size:10px; background:#fee2e2; color:#991b1b; border-radius:3px;">Revert EM</button>`);
-                }
-                if (info.tmStatus === "Sent") {
-                  rList.push(`<button class="btn secondary" onclick="dispatchMedium('${esc(x.id)}', 'TM', 'Pending')" style="padding:2px 5px; font-size:10px; background:#fee2e2; color:#991b1b; border-radius:3px;">Revert TM</button>`);
-                }
-                if (rList.length) {
-                  revertBtns = `<div style="margin-top:4px; display:flex; gap:3px; justify-content:center; flex-wrap:wrap;">${rList.join("")}</div>`;
-                }
-              }
-
-              return `
-                <tr class="distributor-row" style="border-bottom:1px solid #edf1f6;">
-                  <td style="padding:9px 8px; text-align:center;">${i + 1}</td>
-                  <td style="padding:9px 8px;"><b>${esc(x.district)}</b></td>
-                  <td style="padding:9px 8px;"><b>${esc(x.centreName)}</b></td>
-                  <td style="padding:9px 8px;">${esc(x.incharge || "—")}<br><small style="color:#64748b;">${esc(mobile)}</small></td>
-                  <td style="padding:9px 8px; text-align:right; background:#f9fefb;">${emSentCell}</td>
-                  <td style="padding:9px 8px; text-align:right; background:#f9fefb;">${tmSentCell}</td>
-                  <td style="padding:9px 8px; text-align:right; background:#f9fefb; color:#15803d;"><b style="font-size:14px;">${info.sentTotal.toLocaleString("en-IN")}</b></td>
-                  <td style="padding:9px 8px; text-align:center;">
-                    ${info.statusBadge}
-                    ${extraAction}
-                    ${revertBtns}
-                  </td>
-                </tr>
-              `;
-            }).join("")}
-          </tbody>
-        </table>
+    // Date Filter Toolbar
+    let dateFilterToolbar = `
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; background:#f0fdf4; padding:10px 14px; border-radius:8px; border:1px solid #bbf7d0;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-weight:750; color:#166534; font-size:13px;">📅 Filter by Dispatched Date:</span>
+          <select id="sentDateFilterSelect" onchange="setSentBooksDateFilter(this.value)" style="padding:5px 10px; font-size:12.5px; font-weight:700; border-radius:6px; width:auto; border:1px solid #86efac; background:#fff;">
+            <option value="">-- All Dispatched Dates (${sentReqs.length} Total Centres) --</option>
+            ${allDatesWithCounts(allSentDates, sentReqs)}
+          </select>
+          ${window.gdSentFilterDate ? `<button class="btn secondary" onclick="setSentBooksDateFilter('')" style="padding:4px 9px; font-size:11px;">✕ Show All Dates</button>` : ""}
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn printbtn" onclick="printSentBooks('${window.gdSentFilterDate || ""}')" style="padding:5px 12px; font-size:12px; font-weight:800; background:#15803d; color:#fff;">🖨 Print ${window.gdSentFilterDate ? formatDisplayDate(window.gdSentFilterDate) : "Date-wise"} Dispatches</button>
+        </div>
       </div>
     `;
+
+    function allDatesWithCounts(dates, reqList) {
+      let opts = dates.map(d => {
+        let dCount = reqList.filter(x => getRequirementSentDate(x) === d).length;
+        let dBooks = reqList.filter(x => getRequirementSentDate(x) === d).reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentTotal, 0);
+        return `<option value="${d}" ${d === window.gdSentFilterDate ? "selected" : ""}>📅 ${formatDisplayDate(d)} — ${dCount} Centre(s) (${dBooks.toLocaleString("en-IN")} Books)</option>`;
+      });
+      if (window.gdSentFilterDate && !dates.includes(window.gdSentFilterDate)) {
+        opts.unshift(`<option value="${window.gdSentFilterDate}" selected>📅 ${formatDisplayDate(window.gdSentFilterDate)} — 0 Centres (0 Books)</option>`);
+      }
+      return opts.join("");
+    }
+
+    function renderSentTableRows(subList) {
+      return subList.map((x, i) => {
+        const info = getRequirementDispatchInfo(x);
+        let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+        let mobile = (centre && centre.mobile) ? centre.mobile : (x.mobile || "—");
+        let address = centre && centre.address ? `<br><small style="color:#64748b;">📍 ${esc(centre.address)}</small>` : "";
+        let sDate = getRequirementSentDate(x);
+
+        let emSentCell = info.sentEM > 0
+          ? `<b style="color:#15803d; font-size:13px;">${info.sentEM.toLocaleString("en-IN")}</b>`
+          : `<span style="color:#94a3b8;">0</span>`;
+
+        let tmSentCell = info.sentTM > 0
+          ? `<b style="color:#15803d; font-size:13px;">${info.sentTM.toLocaleString("en-IN")}</b>`
+          : `<span style="color:#94a3b8;">0</span>`;
+
+        let revertBtns = "";
+        if (isFinal) {
+          let rList = [];
+          if (info.emStatus === "Sent") {
+            rList.push(`<button class="btn secondary" onclick="dispatchMedium('${esc(x.id)}', 'EM', 'Pending')" style="padding:2px 5px; font-size:10px; background:#fee2e2; color:#991b1b; border-radius:3px;">Revert EM</button>`);
+          }
+          if (info.tmStatus === "Sent") {
+            rList.push(`<button class="btn secondary" onclick="dispatchMedium('${esc(x.id)}', 'TM', 'Pending')" style="padding:2px 5px; font-size:10px; background:#fee2e2; color:#991b1b; border-radius:3px;">Revert TM</button>`);
+          }
+          if (rList.length) {
+            revertBtns = `<div style="margin-top:4px; display:flex; gap:3px; justify-content:center; flex-wrap:wrap;">${rList.join("")}</div>`;
+          }
+        }
+
+        return `
+          <tr class="distributor-row" style="border-bottom:1px solid #edf1f6;">
+            <td style="padding:9px 8px; text-align:center;">${i + 1}</td>
+            <td style="padding:9px 8px; text-align:center;"><span class="badge" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:11px; white-space:nowrap;">📅 ${formatDisplayDate(sDate)}</span></td>
+            <td style="padding:9px 8px;"><b>${esc(x.district)}</b></td>
+            <td style="padding:9px 8px;"><b>${esc(x.centreName)}</b>${address}</td>
+            <td style="padding:9px 8px;">${esc(x.incharge || "—")}<br><small style="color:#0369a1; font-weight:bold;">📞 ${esc(mobile)}</small></td>
+            <td style="padding:9px 8px; text-align:right; background:#f9fefb;">${emSentCell}</td>
+            <td style="padding:9px 8px; text-align:right; background:#f9fefb;">${tmSentCell}</td>
+            <td style="padding:9px 8px; text-align:right; background:#f9fefb; color:#15803d;"><b style="font-size:14px;">${info.sentTotal.toLocaleString("en-IN")}</b></td>
+            <td style="padding:9px 8px; text-align:center;">
+              ${info.statusBadge}
+              ${x.received ? `<div style="margin-top:3px;"><span class="badge done" style="font-size:10px; padding:2px 6px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-weight:800;">✔ District Received</span><div style="font-size:9.5px; color:#15803d; margin-top:1px;">📅 ${formatDisplayDate(x.receivedDate || x.receivedTime)}</div></div>` : `<div style="margin-top:3px;"><span class="badge" style="font-size:10px; padding:2px 6px; background:#fffbeb; color:#b45309; border:1px solid #fde68a; font-weight:700;">🚚 In Transit (ANL)</span></div>`}
+              ${revertBtns}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    if (window.gdSentFilterDate) {
+      // Filtered by a single date
+      let singleDateContent = "";
+      if (displaySentReqs.length === 0) {
+        singleDateContent = `
+          <div style="padding:32px 20px; text-align:center; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:10px; color:#475569; margin-top:6px;">
+            <div style="font-size:32px; margin-bottom:8px;">📭</div>
+            <b style="font-size:15px; color:#1e293b;">ఈ తేదీన (${formatDisplayDate(window.gdSentFilterDate)}) పుస్తకాలు ఏమీ పంపించలేదు.</b>
+            <div style="font-size:12.5px; margin-top:5px; color:#64748b;">No books were dispatched on ${formatDisplayDate(window.gdSentFilterDate)}.</div>
+            <div style="margin-top:14px;">
+              <button class="btn secondary" onclick="setSentBooksDateFilter('')" style="padding:5px 12px; font-size:12px; font-weight:700;">📅 Show All Dispatched Dates</button>
+            </div>
+          </div>
+        `;
+      } else {
+        let dateEM = displaySentReqs.reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentEM, 0);
+        let dateTM = displaySentReqs.reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentTM, 0);
+        let dateTotal = displaySentReqs.reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentTotal, 0);
+        singleDateContent = `
+          <div style="background:#eaf8ef; padding:10px 14px; margin-bottom:10px; border-radius:8px; border:1px solid #cdeed7; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div style="font-weight:800; color:#14532d; font-size:13.5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span>📅 Dispatched on: <b style="color:#15803d; font-size:14.5px;">${formatDisplayDate(window.gdSentFilterDate)}</b></span>
+              <span class="badge done" style="font-size:11.5px; padding:2px 8px;">${displaySentReqs.length} Centre(s)</span>
+              <span style="color:#166534; font-size:12.5px; font-weight:700;">(EM: ${dateEM.toLocaleString("en-IN")}, TM: ${dateTM.toLocaleString("en-IN")}, Total: <b>${dateTotal.toLocaleString("en-IN")}</b> Books)</span>
+            </div>
+            <button class="btn printbtn" onclick="printSentBooks('${window.gdSentFilterDate}')" style="padding:4px 11px; font-size:11px; font-weight:800; background:#15803d; color:#fff; border-radius:5px;">🖨 Print This Date (${formatDisplayDate(window.gdSentFilterDate)})</button>
+          </div>
+          <div style="overflow:auto; max-height:420px; border:1px solid #cdeed7; border-radius:10px; box-shadow:0 2px 8px rgba(22,163,74,0.08);">
+            <table style="width:100%; border-collapse:collapse; background:#fff; font-size:13px;">
+              <thead style="background:#f2fbf5; position:sticky; top:0; z-index:2; border-bottom:2px solid #cdeed7;">
+                <tr>
+                  <th style="padding:10px 8px; width:4%; text-align:center;">S.No.</th>
+                  <th style="padding:10px 8px; width:11%; text-align:center; background:#e6f9ed;">Dispatched Date</th>
+                  <th style="padding:10px 8px; width:13%; text-align:left;">District</th>
+                  <th style="padding:10px 8px; width:18%; text-align:left;">Reception Centre</th>
+                  <th style="padding:10px 8px; width:16%; text-align:left;">In-charge &amp; Mobile</th>
+                  <th style="padding:10px 8px; width:11%; text-align:right; background:#e6f9ed;">EM Books Sent</th>
+                  <th style="padding:10px 8px; width:11%; text-align:right; background:#e6f9ed;">TM Books Sent</th>
+                  <th style="padding:10px 8px; width:11%; text-align:right; background:#e6f9ed;">Total Books Sent</th>
+                  <th style="padding:10px 8px; width:15%; text-align:center;">Status &amp; Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${renderSentTableRows(displaySentReqs)}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      sentHtml = `
+        ${dateFilterToolbar}
+        ${singleDateContent}
+      `;
+    } else {
+      // All Dates - Group date-wise
+      let groupBlocksHtml = allSentDates.map(d => {
+        let dateItems = sentReqs.filter(x => getRequirementSentDate(x) === d);
+        let dateEM = dateItems.reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentEM, 0);
+        let dateTM = dateItems.reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentTM, 0);
+        let dateTotal = dateItems.reduce((sum, x) => sum + getRequirementDispatchInfo(x).sentTotal, 0);
+
+        return `
+          <div style="margin-bottom:20px; border:1px solid #cdeed7; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(22,163,74,0.06);">
+            <div style="background:#eaf8ef; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid #cdeed7;">
+              <div style="font-weight:800; color:#14532d; font-size:13.5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span>📅 Dispatched on: <b style="color:#15803d; font-size:14.5px;">${formatDisplayDate(d)}</b></span>
+                <span class="badge done" style="font-size:11.5px; padding:2px 8px;">${dateItems.length} Centre(s)</span>
+                <span style="color:#166534; font-size:12.5px; font-weight:700;">(EM: ${dateEM.toLocaleString("en-IN")}, TM: ${dateTM.toLocaleString("en-IN")}, Total: <b>${dateTotal.toLocaleString("en-IN")}</b> Books)</span>
+              </div>
+              <button class="btn printbtn" onclick="printSentBooks('${d}')" style="padding:4px 11px; font-size:11px; font-weight:800; background:#15803d; color:#fff; border-radius:5px;">🖨 Print This Date (${formatDisplayDate(d)})</button>
+            </div>
+            <div style="overflow:auto; max-height:360px;">
+              <table style="width:100%; border-collapse:collapse; background:#fff; font-size:13px;">
+                <thead style="background:#f2fbf5; position:sticky; top:0; z-index:2; border-bottom:2px solid #cdeed7;">
+                  <tr>
+                    <th style="padding:10px 8px; width:4%; text-align:center;">S.No.</th>
+                    <th style="padding:10px 8px; width:11%; text-align:center; background:#e6f9ed;">Dispatched Date</th>
+                    <th style="padding:10px 8px; width:13%; text-align:left;">District</th>
+                    <th style="padding:10px 8px; width:18%; text-align:left;">Reception Centre</th>
+                    <th style="padding:10px 8px; width:16%; text-align:left;">In-charge &amp; Mobile</th>
+                    <th style="padding:10px 8px; width:11%; text-align:right; background:#e6f9ed;">EM Books Sent</th>
+                    <th style="padding:10px 8px; width:11%; text-align:right; background:#e6f9ed;">TM Books Sent</th>
+                    <th style="padding:10px 8px; width:11%; text-align:right; background:#e6f9ed;">Total Books Sent</th>
+                    <th style="padding:10px 8px; width:15%; text-align:center;">Status &amp; Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${renderSentTableRows(dateItems)}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      sentHtml = `
+        ${dateFilterToolbar}
+        ${groupBlocksHtml}
+      `;
+    }
   }
 
   card.style.background = "#fff";
@@ -2205,12 +2450,23 @@ function renderDistributorConfirmation(){
     <div class="head" style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
       <div>
         <h2 style="font-size:22px; color:#111d55; font-weight:800;">📦 Books Dispatch Management</h2>
-        <div class="small" style="margin-top:4px; color:#64748b;">Confirm dispatch status separately for English Medium and Telugu Medium books.</div>
+        <div class="small" style="margin-top:4px; color:#64748b;">Confirm dispatch status separately for English Medium and Telugu Medium books with date-wise tracking.</div>
       </div>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:6px; background:#f8fafc; padding:4px 9px; border-radius:7px; border:1px solid #cbd5e1; flex-wrap:wrap;">
+          <span style="font-size:12px; font-weight:700; color:#334155;">📅 Active Dispatch Date:</span>
+          <input id="dispatchDatePickerInput" type="date" value="${window.gdCurrentDispatchDate || new Date().toISOString().slice(0,10)}" onchange="updateActiveDispatchDate(this.value)" oninput="updateActiveDispatchDate(this.value)" style="width:auto; padding:3px 7px; font-size:12px; font-weight:700; border-radius:5px; border:1px solid #94a3b8; background:#fff;">
+          ${allSentDates.length > 0 ? `
+            <span style="color:#cbd5e1; font-size:12px; margin:0 2px;">|</span>
+            <select onchange="updateActiveDispatchDate(this.value)" style="padding:3px 7px; font-size:11.5px; font-weight:700; border-radius:5px; border:1px solid #86efac; background:#fff; cursor:pointer;">
+              <option value="">-- All Dates (${sentReqs.length} Centres) --</option>
+              ${allSentDates.map(d => `<option value="${d}" ${d === window.gdSentFilterDate ? "selected" : ""}>📅 ${formatDisplayDate(d)}</option>`).join("")}
+            </select>
+          ` : ""}
+        </div>
         <button class="btn printbtn" onclick="printCombinedDispatch()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#10265c; color:#fff;">🖨 Print Combined (All)</button>
         <button class="btn printbtn" onclick="printBooksToBeSent()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#b45309; color:#fff;">🖨 Print Books to be Sent</button>
-        <button class="btn printbtn" onclick="printSentBooks()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#15803d; color:#fff;">🖨 Print Sent Books</button>
+        <button class="btn printbtn" onclick="printSentBooks(window.gdSentFilterDate || '')" style="padding:6px 11px; font-size:12px; font-weight:800; background:#15803d; color:#fff;">🖨 Print Sent Books ${window.gdSentFilterDate ? '(' + formatDisplayDate(window.gdSentFilterDate) + ')' : '(Date-wise)'}</button>
         <button class="btn printbtn" onclick="printReceptionCentres()" style="padding:6px 11px; font-size:12px; font-weight:800;">🖨 Print Reception Centres</button>
         <button class="btn printbtn" onclick="printDispatchSummary()" style="padding:6px 11px; font-size:12px; font-weight:800; background:#7c3aed; color:#fff;">🖨 Print Dispatch Summary</button>
         <input id="distributorSearch" placeholder="Search centre / district / in-charge..." oninput="filterDistributorTable()" style="max-width:220px; padding:6px 10px; font-size:12px;">
@@ -2228,7 +2484,7 @@ function renderDistributorConfirmation(){
     <div>
       <h3 style="font-size:16px; color:#15803d; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
         ✔ Sent Books (Dispatched)
-        <span class="badge done" style="font-size:12px; padding:2px 8px;">${sentReqs.length} Centre(s) Dispatched</span>
+        <span class="badge done" style="font-size:12px; padding:2px 8px;">${window.gdSentFilterDate ? `${displaySentReqs.length} Centre(s) Dispatched on ${formatDisplayDate(window.gdSentFilterDate)}` : `${sentReqs.length} Centre(s) Dispatched`}</span>
       </h3>
       ${sentHtml}
     </div>
@@ -2524,7 +2780,12 @@ function newReceptionCentre(id=null){
   </label>
  <label class="full">Complete Address<textarea id="cAddress" placeholder="Enter full postal address">${esc(x.address)}</textarea></label>
  <label>Centre In-charge<input id="cIncharge" value="${esc(x.incharge)}" placeholder="Name of in-charge"></label>
- <label>Mobile Number<input id="cMobile" value="${esc(x.mobile)}" placeholder="10-digit mobile number"></label>
+ <label>Mobile Number (10 Digits)
+   <input id="cMobile" value="${esc(x.mobile)}" placeholder="10-digit mobile number" maxlength="15" oninput="validateReceptionMobileInput()" onblur="validateReceptionMobileInput()">
+   <div id="cMobileWarn" style="display:none; color:#dc2626; font-size:11.5px; font-weight:700; margin-top:5px; background:#fef2f2; border:1px solid #fecaca; padding:6px 10px; border-radius:6px; line-height:1.4;">
+     ⚠️ wrong గా మీరు enter చేశారు, correct గా enter చేయండి, only ten digits enter చేయండి
+   </div>
+ </label>
  <label class="full">Remarks<textarea id="cRemarks" placeholder="Optional remarks">${esc(x.remarks)}</textarea></label>
  </div>
  <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button>
@@ -2532,11 +2793,46 @@ function newReceptionCentre(id=null){
  modal.classList.add("show");
 }
 
+function validateReceptionMobileInput(){
+  const input = document.getElementById("cMobile");
+  const warn = document.getElementById("cMobileWarn");
+  if (!input || !warn) return false;
+  const val = input.value;
+  if (!val) {
+    warn.style.display = "none";
+    input.style.borderColor = "";
+    return false;
+  }
+  const isValid = /^\d{10}$/.test(val);
+  if (!isValid) {
+    warn.style.display = "block";
+    input.style.borderColor = "#dc2626";
+    return false;
+  } else {
+    warn.style.display = "none";
+    input.style.borderColor = "#16a34a";
+    return true;
+  }
+}
+
 function saveReceptionCentre(id){
   let d=session.role==="district"?session.district:cDistrict.value;
   if(!canAdd(d)){alert("You can enter data only for your assigned district.");return}
+
+  const rawMobile = cMobile.value;
+  if (!/^\d{10}$/.test(rawMobile)) {
+    const warn = document.getElementById("cMobileWarn");
+    if (warn) {
+      warn.style.display = "block";
+      cMobile.style.borderColor = "#dc2626";
+    }
+    alert("⚠️ wrong గా మీరు enter చేశారు, correct గా enter చేయండి, only ten digits enter చేయండి");
+    cMobile.focus();
+    return;
+  }
+
   let x={id:id||generateUUID(),district:d,centreName:cName.value.trim(),address:cAddress.value.trim(),
-         incharge:cIncharge.value.trim(),mobile:cMobile.value.trim(),remarks:cRemarks.value.trim()};
+         incharge:cIncharge.value.trim(),mobile:rawMobile.trim(),remarks:cRemarks.value.trim()};
   if(!x.centreName){alert("Please enter the reception centre name.");return}
   if(id)db.receptionCentres[db.receptionCentres.findIndex(y=>y.id===id)]=x;
   else db.receptionCentres.push(x);
@@ -2554,10 +2850,73 @@ function renderBookRequirements(){
     (!d||x.district===d)&&(!q||[x.district,x.centreName,x.incharge,x.remarks].join(" ").toLowerCase().includes(q))
   );
   box.innerHTML=rows.length?`<div style="overflow:auto"><table>
-  <thead><tr><th>S.No.</th><th>District</th><th>Reception Centre</th><th>EM Books</th><th>TM Books</th><th>Total Books</th><th>Dispatch Status</th><th>Date</th></tr></thead>
+  <thead><tr>
+    <th style="text-align:center;">S.No.</th>
+    <th>District</th>
+    <th>Reception Centre &amp; Address</th>
+    <th>In-charge &amp; Mobile</th>
+    <th style="text-align:right;">EM Books</th>
+    <th style="text-align:right;">TM Books</th>
+    <th style="text-align:right;">Total Books</th>
+    <th style="text-align:center;">Dispatch Status</th>
+    <th style="text-align:center;">Received Status</th>
+    <th style="text-align:center;">Date</th>
+    ${canEdit() ? '<th style="text-align:center;">Action</th>' : ''}
+  </tr></thead>
   <tbody>${rows.map((x,i)=>{
     const info = getRequirementDispatchInfo(x);
-    return `<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</td><td>${x.em || 0}</td><td>${x.tm || 0}</td><td><b>${x.total || 0}</b></td><td>${info.statusBadge}</td><td>${textGD(x.date||x.createdAt||"—")}</td></tr>`;
+    let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+    let mobile = (centre && centre.mobile) ? centre.mobile : (x.mobile || "");
+    let address = centre && centre.address ? `<br><small style="color:#64748b;">📍 ${esc(centre.address)}</small>` : "";
+    let mobileHtml = mobile ? `<br><small style="color:#2563eb; font-weight:700;">📞 ${esc(mobile)}</small>` : "";
+
+    // Received Status cell
+    let receivedHtml = "";
+    if (x.received) {
+      let rDate = x.receivedDate || x.receivedTime || "";
+      let rDateStr = rDate ? `<small style="display:block; font-size:10.5px; color:#166534; font-weight:600; margin-top:2px;">📅 ${formatDisplayDate(rDate)}</small>` : "";
+      let undoBtn = (session.role === "final")
+        ? `<button class="btn secondary" onclick="revertRequirementReceived('${esc(x.id)}')" style="padding:1px 6px; font-size:10px; color:#991b1b; background:#fee2e2; border-radius:3px; margin-top:3px; border:none; cursor:pointer;" title="Revert back to not received">↩ Undo</button>`
+        : "";
+      receivedHtml = `<div style="text-align:center;"><span class="badge done" style="background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:11px; padding:3px 8px; font-weight:800; display:inline-block;">✔ Books Received</span>${rDateStr}${undoBtn}</div>`;
+    } else if (info.sentTotal > 0) {
+      // Books have been dispatched by distributor
+      if (session.role === "district") {
+        receivedHtml = `
+          <div style="text-align:center;">
+            <button class="btn" onclick="confirmRequirementReceived('${esc(x.id)}')" style="padding:4px 10px; font-size:11.5px; font-weight:800; background:#16a34a; color:#fff; border-radius:6px; cursor:pointer; box-shadow:0 2px 5px rgba(22,163,74,0.25); border:none; display:inline-flex; align-items:center; gap:4px; white-space:nowrap;" title="Click to confirm receipt of books via ANL parcel service">📥 Received</button>
+            <div style="font-size:10px; color:#059669; font-weight:600; margin-top:2px;">(ANL Parcel)</div>
+          </div>`;
+      } else if (session.role === "final") {
+        receivedHtml = `
+          <div style="text-align:center;">
+            <span class="badge" style="background:#fffbeb; color:#b45309; border:1px solid #fde68a; font-size:10.5px; padding:2px 6px; font-weight:700; display:inline-block;">🚚 In Transit (ANL)</span>
+            <button class="btn" onclick="confirmRequirementReceived('${esc(x.id)}')" style="padding:2px 6px; font-size:10.5px; font-weight:750; background:#16a34a; color:#fff; border-radius:4px; border:none; cursor:pointer; margin-top:3px; display:block; margin-left:auto; margin-right:auto;" title="Mark Received as Final Admin">📥 Mark Received</button>
+          </div>`;
+      } else {
+        receivedHtml = `<div style="text-align:center;"><span class="badge" style="background:#fffbeb; color:#b45309; border:1px solid #fde68a; font-size:10.5px; padding:2px 6px; font-weight:700;">🚚 In Transit (ANL)</span><div style="font-size:10px; color:#92400e; margin-top:2px;">Awaiting District Receipt</div></div>`;
+      }
+    } else {
+      receivedHtml = `<div style="text-align:center;"><span style="color:#94a3b8; font-size:12px;">⏳ Awaiting Dispatch</span></div>`;
+    }
+
+    let actionCell = canEdit() 
+      ? `<td style="text-align:center; white-space:nowrap;"><button class="btn secondary" onclick="newBookRequirement('${esc(x.id)}')" style="padding:4px 10px; font-size:12px; font-weight:750; background:#e0e7ff; color:#3730a3; border-radius:6px; cursor:pointer;" title="Edit Books Requirement">✏ Edit</button></td>` 
+      : "";
+
+    return `<tr>
+      <td style="text-align:center;">${i+1}</td>
+      <td>${textGD(x.district)}</td>
+      <td><b>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</b>${address}</td>
+      <td>${esc(x.incharge || "—")}${mobileHtml}</td>
+      <td style="text-align:right;">${x.em || 0}</td>
+      <td style="text-align:right;">${x.tm || 0}</td>
+      <td style="text-align:right;"><b>${x.total || 0}</b></td>
+      <td style="text-align:center;">${info.statusBadge}</td>
+      <td>${receivedHtml}</td>
+      <td style="text-align:center;">${textGD(x.date||x.createdAt||"—")}</td>
+      ${actionCell}
+    </tr>`;
   }).join("")}</tbody></table></div>`:
   `<div class="empty" style="padding:28px"><div class="big">📚</div><b>No book requirements entered yet.</b></div>`;
 }
@@ -2596,15 +2955,23 @@ function newBookRequirement(id=null){
    district:session.role==="district"?session.district:districts[0],
    centreName:"",className:"",incharge:"",em:"",tm:"",total:"",remarks:""
  };
+ if(!x) { alert("Book requirement record not found."); return; }
  if(id&&!canEdit()){alert("Only Final Admin can edit existing book requirement records.");return}
  let availableCentres=db.receptionCentres.filter(c=>session.role!=="district"||c.district===session.district);
+ let districtCentres=availableCentres.filter(c=>c.district===x.district);
+ let hasCurrentCentre=districtCentres.some(c=>c.centreName===x.centreName);
+ let centreOptions=districtCentres.map(c=>`<option ${c.centreName===x.centreName?"selected":""}>${esc(c.centreName)}</option>`).join("");
+ if (x.centreName && !hasCurrentCentre) {
+   centreOptions = `<option selected>${esc(x.centreName)}</option>` + centreOptions;
+ }
+
  modalbox.innerHTML=`<h2>📚 ${id?"Edit":"Add"} Books Requirement</h2>
   <div class="formgrid">
   <label>District<select id="bDistrict" ${session.role==="district"?"disabled":""} onchange="updateBookRequirementCentres()">
   ${districts.filter(d => d !== "VGS books" && d !== "APMF amount").map(d=>`<option ${d===x.district?"selected":""}>${esc(d)}</option>`).join("")}</select></label>
   <label>Reception Centre
   <select id="bCentre" onchange="updateInchargeFromCentre()"><option value="">-- Select Centre --</option>
-  ${availableCentres.filter(c=>c.district===x.district).map(c=>`<option ${c.centreName===x.centreName?"selected":""}>${esc(c.centreName)}</option>`).join("")}
+  ${centreOptions}
   </select></label>
   <label>In-charge<input id="bIncharge" value="${esc(x.incharge)}"></label>
   <label>English Medium (EM)<input id="bEM" type="number" min="0" value="${esc(x.em)}" oninput="calcRequirementTotal()"></label>
@@ -2638,15 +3005,41 @@ function saveBookRequirement(id){
   let tmVal = Number(bTM.value || 0);
   let original = id ? db.bookRequirements.find(y=>y.id===id) : null;
   let createdAt = original ? (original.createdAt || original.date || new Date().toLocaleString()) : new Date().toLocaleString();
-  let x={id:id||generateUUID(),district:d,centreName:bCentre.value,className:"",
-         incharge:bIncharge.value.trim(),em:emVal,tm:tmVal,total:emVal+tmVal,remarks:bRemarks.value.trim(),
-         createdAt: createdAt, status: original ? (original.status || "Pending") : "Pending"};
+  let centre = db.receptionCentres.find(c => c.district === d && c.centreName === bCentre.value);
+  let x={
+    ...(original || {}),
+    id: id || generateUUID(),
+    district: d,
+    centreName: bCentre.value,
+    className: "",
+    incharge: bIncharge.value.trim(),
+    mobile: (centre ? centre.mobile : (original && original.mobile ? original.mobile : "")),
+    address: (centre ? centre.address : (original && original.address ? original.address : "")),
+    em: emVal,
+    tm: tmVal,
+    total: emVal + tmVal,
+    remarks: bRemarks.value.trim(),
+    createdAt: createdAt,
+    status: original ? (original.status || "Pending") : "Pending",
+    emStatus: original ? (original.emStatus || "Pending") : "Pending",
+    tmStatus: original ? (original.tmStatus || "Pending") : "Pending"
+  };
   if(!x.centreName){alert("Please select a reception centre.");return}
   if(!x.em&&!x.tm){alert("Please enter the book requirement.");return}
-  if(id)db.bookRequirements[db.bookRequirements.findIndex(y=>y.id===id)]=x;
-  else db.bookRequirements.push(x);
+  if(id) {
+    let idx = db.bookRequirements.findIndex(y=>y.id===id);
+    if(idx !== -1) db.bookRequirements[idx] = x;
+    else db.bookRequirements.push(x);
+  } else {
+    db.bookRequirements.push(x);
+  }
   audit((id?"Edited":"Added")+" book requirement for "+d);
-  save("requirement", x);closeModal();renderAll();toast("Books requirement saved");
+  save("requirement", x);
+  updateDistributorStatusFromRequirements(d);
+  if (original && original.district !== d) {
+    updateDistributorStatusFromRequirements(original.district);
+  }
+  closeModal();renderAll();toast("Books requirement saved");
 }
 
 function renderEntries(){
@@ -2709,12 +3102,10 @@ function savePayment(){
 function newReceipt(){
  if(!session.role){alert("Please login first.");return}
  let d=session.role==="district"?session.district:districts[0];
- let availableCentres=db.receptionCentres.filter(c=>c.district===d);
  modalbox.innerHTML=`<h2>🧾 Upload Payment Receipt</h2>
-   <div class="info">District Admins can upload receipts for <b>${esc(d)}</b>. The receipt is linked to the district and stored in this browser prototype. Production version can connect to secure cloud storage.</div>
+   <div class="info">District Admins can upload receipts for <b>${esc(d)}</b>. Payment is recorded directly at District level. Production version can connect to secure cloud storage.</div>
    <div class="formgrid">
-   <label>District<select id="rDistrict" ${session.role==="district"?"disabled":""} onchange="updateReceiptCentres()">${districts.filter(x => x !== "VGS books" && x !== "APMF amount").map(x=>`<option ${x===d?"selected":""}>${esc(x)}</option>`).join("")}</select></label>
-   <label>Reception Centre<select id="rCentre"><option value="">-- Select Centre --</option>${availableCentres.map(c=>`<option>${esc(c.centreName)}</option>`).join("")}</select></label>
+   <label>District<select id="rDistrict" ${session.role==="district"?"disabled":""}>${districts.filter(x => x !== "VGS books" && x !== "APMF amount").map(x=>`<option ${x===d?"selected":""}>${esc(x)}</option>`).join("")}</select></label>
    <label>Payment To<select id="rPaymentTo"><option value="vgs_books">VGS books</option><option value="apmf_amount">APMF amount</option></select></label>
    <label>Receipt Date<input id="rDate" type="date" value="${new Date().toISOString().slice(0,10)}"></label>
    <label>Amount on Receipt (₹)<input id="rAmount" type="number" min="0" step="0.01"></label>
@@ -2726,13 +3117,7 @@ function newReceipt(){
    modal.classList.add("show")
 }
 function updateReceiptCentres() {
-  const d = document.getElementById("rDistrict").value;
-  const centres = db.receptionCentres.filter(c => c.district === d);
-  const select = document.getElementById("rCentre");
-  if (select) {
-    select.innerHTML = '<option value="">-- Select Centre --</option>' + 
-      centres.map(c => `<option>${esc(c.centreName)}</option>`).join("");
-  }
+  // Kept for backward compatibility
 }
 async function saveReceipt(){
   let d=session.role==="district"?session.district:rDistrict.value;
@@ -2806,7 +3191,7 @@ async function saveReceipt(){
   let x = {
     id: generateUUID(),
     district: d,
-    centreName: document.getElementById("rCentre")?.value || "",
+    centreName: "",
     paymentTo: document.getElementById("rPaymentTo")?.value || "vgs_books",
     date: rDate.value,
     amount: rAmount.value,
@@ -2880,7 +3265,7 @@ function renderReceipts(){
   }
 
   box.innerHTML=rows.length?`<div style="overflow:auto"><table>
-  <thead><tr><th>S.No.</th><th>District</th><th>Reception Centre</th><th>Payment To</th><th>Receipt / File</th><th>UTR</th><th>Amount</th><th>Uploaded By</th><th>Date & Time</th><th>Status</th><th>Action</th></tr></thead>
+  <thead><tr><th>S.No.</th><th>District</th><th>Payment To</th><th>Receipt / File</th><th>UTR</th><th>Amount</th><th>Uploaded By</th><th>Date & Time</th><th>Status</th><th>Action</th></tr></thead>
   <tbody>${rows.map((x,i)=>{
     let nameHtml = `<b>${textGD(x.receiptName || "—")}</b>`;
     if (x.fileUrl) {
@@ -2903,7 +3288,7 @@ function renderReceipts(){
         actionHtml = `<button class="btn primary" onclick="confirmReceipt('${x.id}')" style="padding:4px 8px; font-size:11px;">Confirm</button>`;
       }
     }
-    return `<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td>${textGD(x.centreName||x.point||x.receptionCentre||"—")}</td><td><span class="badge" style="background:#eff6ff; color:#1d4ed8; font-weight:bold;">${esc(pTo)}</span></td><td>${nameHtml}</td><td>${esc(x.utr || "—")}</td><td><b>${x.amount?"₹"+money(x.amount).toLocaleString("en-IN"):"₹0"}</b></td><td>${textGD(x.by||x.username||x.uploadedBy||"—")}</td><td>${textGD(x.time||x.date||x.createdAt||"—")}</td><td><span class="badge ${statusClass}">${esc(statusText)}</span></td><td>${actionHtml}</td></tr>`
+    return `<tr><td>${i+1}</td><td>${textGD(x.district)}</td><td><span class="badge" style="background:#eff6ff; color:#1d4ed8; font-weight:bold;">${esc(pTo)}</span></td><td>${nameHtml}</td><td>${esc(x.utr || "—")}</td><td><b>${x.amount?"₹"+money(x.amount).toLocaleString("en-IN"):"₹0"}</b></td><td>${textGD(x.by||x.username||x.uploadedBy||"—")}</td><td>${textGD(x.time||x.date||x.createdAt||"—")}</td><td><span class="badge ${statusClass}">${esc(statusText)}</span></td><td>${actionHtml}</td></tr>`
   }).join("")}</tbody></table></div>`:
   `<div class="empty" style="padding:30px"><div class="big">✉</div><b>No receipts uploaded yet.</b></div>`;
 }
@@ -3101,14 +3486,13 @@ function printReceiptUploads() {
       <thead>
         <tr style="background:#f1f5f9;">
           <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">District</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">Reception Centre</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Payment To</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">Receipt File Name</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:10%;">UTR</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">Amount</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:10%;">Uploaded By</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:10%;">Date &amp; Time</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:18%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:16%;">Payment To</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:18%;">Receipt File Name</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:13%;">UTR</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:12%;">Amount</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:9%;">Uploaded By</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:9%;">Date &amp; Time</th>
         </tr>
       </thead>
       <tbody>
@@ -3124,12 +3508,11 @@ function printReceiptUploads() {
     content += `
       <tr>
         <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
-        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.district)}</td>
-        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName || "—")}</b></td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.district)}</b></td>
         <td style="border:1px solid #cbd5e1; padding:6px;">${esc(pTo)}</td>
         <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.receiptName || "—")}</td>
         <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.utr || "—")}</td>
-        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${amt.toLocaleString("en-IN")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>₹${amt.toLocaleString("en-IN")}</b></td>
         <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.by || "—")}</td>
         <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.time || x.date || "—")}</td>
       </tr>
@@ -3139,7 +3522,7 @@ function printReceiptUploads() {
   if (rows.length) {
     content += `
       <tr style="background:#f1f5f9; font-weight:bold;">
-        <td colspan="6" style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Total</td>
+        <td colspan="5" style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Total</td>
         <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">₹${totalAmount.toLocaleString("en-IN")}</td>
         <td colspan="2" style="border:1px solid #cbd5e1; padding:6px;"></td>
       </tr>
@@ -3378,12 +3761,12 @@ function printForm2BookRequirements() {
       <thead>
         <tr style="background:#f1f5f9;">
           <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:5%;">S.No.</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">District</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:25%;">Reception Centre</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:15%;">In-charge</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">EM Books</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">TM Books</th>
-          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:10%;">Total Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:14%;">District</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:26%;">Reception Centre &amp; Address</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:left; width:20%;">In-charge &amp; Phone Number</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:11%;">EM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:11%;">TM Books</th>
+          <th style="border:1px solid #cbd5e1; padding:6px; text-align:right; width:13%;">Total Books</th>
         </tr>
       </thead>
       <tbody>
@@ -3399,12 +3782,17 @@ function printForm2BookRequirements() {
     totalTM += tm;
     totalAll += tot;
 
+    let centre = db.receptionCentres.find(c => c.district === x.district && c.centreName === x.centreName);
+    let mobile = (centre && centre.mobile) ? centre.mobile : (x.mobile || "—");
+    let address = (centre && centre.address) ? `<br><small style="color:#475569;">📍 ${esc(centre.address)}</small>` : "";
+    let mobileHtml = mobile && mobile !== "—" ? `<br><small style="color:#0369a1; font-weight:700;">📞 ${esc(mobile)}</small>` : "";
+
     content += `
       <tr>
         <td style="border:1px solid #cbd5e1; padding:6px;">${i + 1}</td>
         <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.district)}</td>
-        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName)}</b></td>
-        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.incharge || "—")}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;"><b>${esc(x.centreName)}</b>${address}</td>
+        <td style="border:1px solid #cbd5e1; padding:6px;">${esc(x.incharge || "—")}${mobileHtml}</td>
         <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${em.toLocaleString("en-IN")}</td>
         <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${tm.toLocaleString("en-IN")}</td>
         <td style="border:1px solid #cbd5e1; padding:6px; text-align:right;"><b>${tot.toLocaleString("en-IN")}</b></td>
