@@ -17,17 +17,17 @@ A client-side single-page dashboard application built to manage and audit the di
 
 ### 1. Final Admin (System Administrator)
 *   **Username:** `admin`
-*   **Password:** `APMF-FINAL-2026`
+*   **Password:** `*********`
 *   *Permissions:* Full system control, reset databases, and view all passwords.
 
 ### 2. District Admins (28 Districts)
 *   **Username:** `apmf_<district_abbreviation>` (e.g., `apmf_asr` for Alluri Sitharama Raju)
-*   **Password:** `APMF@<abbreviation>2026` (e.g., `APMF@ASR2026`)
+*   **Password:** `***********
 *   *Permissions:* Add local distribution records, upload receipts, and log payments.
 
 ### 3. Books Distributor
 *   **Username:** `apmf_distributor`
-*   **Password:** `APMF@DIST2026`
+*   **Password:**********
 *   *Permissions:* Confirm dispatches and book receipts across all districts.
 
 ---
