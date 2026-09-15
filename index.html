@@ -1118,9 +1118,7 @@ function renderDashboardWidgets(){
     totalBooks = e.reduce((a, x) => a + money(x.total), 0);
   }
 
-  const r = visibleReceipts();
-  const paidAmount = p.reduce((a, x) => a + money(x.amount), 0)
-                   + r.reduce((a, x) => a + money(x.amount), 0);
+  const paidAmount = p.reduce((a, x) => a + money(x.amount), 0);
   const totalDues = totalBooks * (db.bookPrice || 60);
   const balanceAmount = totalDues - paidAmount;
 
@@ -2688,8 +2686,7 @@ function renderSummary(){
       }
     }
 
-    let a = p.reduce((sum, x) => sum + money(x.amount), 0)
-           + r.reduce((sum, x) => sum + money(x.amount), 0);
+    let a = p.reduce((sum, x) => sum + money(x.amount), 0);
     let totalDues = totalInd * (db.bookPrice || 60);
     let balance = totalDues - a;
 
@@ -3616,8 +3613,7 @@ function printDistrictAccounts() {
       }
     }
 
-    let amtRec = p.reduce((sum, x) => sum + money(x.amount), 0)
-               + r.reduce((sum, x) => sum + money(x.amount), 0);
+    let amtRec = p.reduce((sum, x) => sum + money(x.amount), 0);
     let totalDues = totalIndValue * (db.bookPrice || 60);
     let balance = totalDues - amtRec;
 
